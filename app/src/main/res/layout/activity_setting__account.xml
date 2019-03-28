@@ -48,6 +48,7 @@
             tools:layout_editor_absoluteX="16dp" />
 
         <ListView
+            android:id="@+id/account_list"
             android:layout_width="245dp"
             android:layout_height="280dp"
             tools:layout_editor_absoluteX="16dp"
