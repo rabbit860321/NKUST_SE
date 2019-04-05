@@ -2,6 +2,7 @@ package com.example.nkust_se;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -31,6 +32,7 @@ public class Setting_Account extends AppCompatActivity {
     ContentValues AccountValues;  //存放欲新增的帳戶資料
     Cursor AccountCursor;         //帳戶用指標
     Button add_btn;
+    Button save_btn;
     ListView account_list;
 
     @Override
@@ -40,6 +42,7 @@ public class Setting_Account extends AppCompatActivity {
 
         AccountValues = new ContentValues();
         add_btn = (Button)findViewById(R.id.add_btn);
+        save_btn = (Button)findViewById(R.id.save_btn);
         account_list = (ListView)findViewById(R.id.account_list);
 
         DH = new SQLiteDB(this);
@@ -74,8 +77,8 @@ public class Setting_Account extends AppCompatActivity {
 
                 obj_TableRow1.addView(obj_tv1);
                 obj_TableRow1.addView(obj_et1);
-                obj_TableRow1.addView(obj_tv2);
-                obj_TableRow1.addView(obj_et2);
+                obj_TableRow2.addView(obj_tv2);
+                obj_TableRow2.addView(obj_et2);
 
                 obj_TableLayout.addView(obj_TableRow1);
                 obj_TableLayout.addView(obj_TableRow2);
@@ -94,6 +97,16 @@ public class Setting_Account extends AppCompatActivity {
                 obj_Dialog.show();
             }
         });
+
+        save_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent obj_gotomain_screen = new Intent();
+                obj_gotomain_screen.setClass(Setting_Account.this,Main_Screen.class);
+                startActivity(obj_gotomain_screen);
+            }
+        });
     }
     private void showList(){
         AccountCursor = db.query("AccountTB",new String[]{"_id","帳戶名","金額"},null,null,null,null,null);
@@ -106,7 +119,6 @@ public class Setting_Account extends AppCompatActivity {
             item.put("金額",AccountCursor.getString(2));
             items.add(item);
             AccountCursor.moveToNext();
-
         }
         SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_expandable_list_item_2,new String[]{"帳戶名","金額"},new int[]{android.R.id.text1,android.R.id.text2});
         account_list.setAdapter(SA);
