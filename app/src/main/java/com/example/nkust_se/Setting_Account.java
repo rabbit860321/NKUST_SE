@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -98,6 +99,31 @@ public class Setting_Account extends AppCompatActivity {
             }
         });
 
+        account_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final TextView _id = (TextView) view.findViewById(R.id.account_id);
+                final TextView name = (TextView) view.findViewById(R.id.account_name);
+
+                AlertDialog.Builder obj_YesOrNoDialog = new AlertDialog.Builder(Setting_Account.this);
+                obj_YesOrNoDialog.setMessage("確定刪除帳戶:"+ name.getText().toString() + "?");
+                obj_YesOrNoDialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.delete("AccountTB","_id" + "=" + _id.getText().toString(),null);
+                        showList();
+                    }
+                });
+                obj_YesOrNoDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                obj_YesOrNoDialog.show();
+            }
+        });
+
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,11 +142,11 @@ public class Setting_Account extends AppCompatActivity {
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",AccountCursor.getString(0));
             item.put("帳戶名",AccountCursor.getString(1));
-            item.put("金額",AccountCursor.getString(2));
+            item.put("金額","$"+AccountCursor.getString(2));
             items.add(item);
             AccountCursor.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_expandable_list_item_2,new String[]{"帳戶名","金額"},new int[]{android.R.id.text1,android.R.id.text2});
+        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.account_layout,new String[]{"_id","帳戶名","金額"},new int[]{R.id.account_id,R.id.account_name,R.id.account_money});
         account_list.setAdapter(SA);
     }
 }
