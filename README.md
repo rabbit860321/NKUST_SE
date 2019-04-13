@@ -9,7 +9,7 @@
 
 按下新增按鈕
 
-![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190414_3.jpg)
+![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190414_3.png)
 
 按下儲存，加入資料庫，載入列表
 
