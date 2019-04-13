@@ -1,7 +1,7 @@
 # 說明
-一點開App，判斷帳戶資料庫是否無資料，若無則進入帳戶初始頁面=>
+一點開App，判斷帳戶資料庫是否無資料，若無則進入帳戶初始頁面
 
-![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190414_1.jpg.jpg)
+![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190414_1.jpg)
 
 帳戶初始化界面
 
