@@ -41,6 +41,9 @@ public class Setting_Account extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting__account);
 
+        // 隱藏titla Bar
+        getSupportActionBar().hide();
+
         AccountValues = new ContentValues();
         add_btn = (Button)findViewById(R.id.add_btn);
         save_btn = (Button)findViewById(R.id.save_btn);

@@ -19,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 隱藏titla Bar
+        getSupportActionBar().hide();
+
         DH = new SQLiteDB(this);
         db = DH.getWritableDatabase();
 
