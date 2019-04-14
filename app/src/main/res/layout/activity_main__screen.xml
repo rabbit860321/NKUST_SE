@@ -16,26 +16,15 @@
             android:layout_height="50dp"
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal">
-            <Button
-                android:id="@+id/left_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:text="" />
             <TextView
                 android:id="@+id/Date_View"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#FFFFFF"
                 android:text="日期"
                 android:textSize="25dp" />
-
-            <Button
-                android:id="@+id/right_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:text="" />
         </LinearLayout>
 
         <ListView
@@ -53,19 +42,26 @@
             android:layout_marginRight="10dp">
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/expense_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                android:textSize="20dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="25dp"
                 android:text="+支出" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/income_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                android:textSize="20dp"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="25dp"
                 android:text="+收入" />
         </LinearLayout>
 

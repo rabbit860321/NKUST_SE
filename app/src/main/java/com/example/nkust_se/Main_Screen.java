@@ -16,31 +16,31 @@ import java.util.Date;
 
 public class Main_Screen extends AppCompatActivity {
 
+    TextView Date_View;
+    Calendar rightnow;
+    Button expense_btn;
+    Button income_btn;
+    int year;
+    int month;
+    int day;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__screen);
 
-        final TextView Date_View = (TextView)findViewById(R.id.Date_View);
-        final Calendar rightnow = Calendar.getInstance();
-        Button left_btn = (Button)findViewById(R.id.left_btn);
-        Button right_btn = (Button)findViewById(R.id.right_btn);
+        // 隱藏titla Bar
+        getSupportActionBar().hide();
 
+        Date_View = (TextView)findViewById(R.id.Date_View);
+        expense_btn = (Button)findViewById(R.id.expense_btn);
+        income_btn = (Button)findViewById(R.id.income_btn);
+        rightnow = Calendar.getInstance();
 
-        final int year = rightnow.get(Calendar.YEAR);     //取出年月日
-        final int month = rightnow.get(Calendar.MONTH)+1;
-        final int day = rightnow.get(Calendar.DAY_OF_MONTH);
-
+        year = rightnow.get(Calendar.YEAR);     //取出年月日
+        month = rightnow.get(Calendar.MONTH)+1;
+        day = rightnow.get(Calendar.DAY_OF_MONTH);
 
         Date_View.setText(year+"年"+month+"月"+day+"日");
-        left_btn.setText("<");
-        right_btn.setText(">");
-
-        left_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rightnow.add(rightnow.get(Calendar.DATE),1);
-            }
-        });
    }
 }
