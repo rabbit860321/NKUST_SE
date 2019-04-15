@@ -1,5 +1,6 @@
 package com.example.nkust_se;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,5 +43,23 @@ public class Main_Screen extends AppCompatActivity {
         day = rightnow.get(Calendar.DAY_OF_MONTH);
 
         Date_View.setText(year+"年"+month+"月"+day+"日");
+
+        expense_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent obj_Cost_screen = new Intent();
+                obj_Cost_screen.setClass(Main_Screen.this,Cost_Screen.class);
+                startActivity(obj_Cost_screen);
+            }
+        });
+
+        income_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent obj_Cost_screen = new Intent();
+                obj_Cost_screen.setClass(Main_Screen.this,Cost_Screen.class);
+                startActivity(obj_Cost_screen);
+            }
+        });
    }
 }
