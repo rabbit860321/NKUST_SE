@@ -15,7 +15,7 @@
 
 ![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190414_4.jpg)
 
-若輸入錯誤，按下開欄位，彈出刪除視窗
+若輸入錯誤，按下該欄位，彈出刪除視窗
 
 ![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190414_5.jpg)
 
