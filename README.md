@@ -25,9 +25,9 @@
 
 按下+支出or+收入進入輸入金額的介面
 
-![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190414_7.jpg)
+![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190418_7.jpg)
 
 輸入完金額按下OK 進入點選類別的介面
 
-![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190414_8.jpg)
+![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190418_8.jpg)
 
