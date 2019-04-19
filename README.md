@@ -15,10 +15,19 @@
 
 ![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190414_4.jpg)
 
-若輸入錯誤，按下開欄位，彈出刪除視窗
+若輸入錯誤，按下該欄位，彈出刪除視窗
 
 ![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190414_5.jpg)
 
 按下完成，進入主畫面
 
 ![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190414_6.jpg)
+
+按下+支出or+收入進入輸入金額的介面
+
+![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190418_7.jpg)
+
+輸入完金額按下OK 進入點選類別的介面
+
+![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190418_8.jpg)
+
