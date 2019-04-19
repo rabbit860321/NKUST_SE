@@ -1,45 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="40dp"
+        android:orientation="horizontal">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/account_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_gravity="left"
+            android:text="帳戶名稱"
+            android:textColor="#000000"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/account_id"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/account_name"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="#000000"
-                android:paddingLeft="20dp"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/account_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="gone"
-                android:text="TextView"
-                />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textSize="16dp"
+            android:text="帳戶ID"
+            />
 
         <TextView
             android:id="@+id/account_money"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="right"
-            android:layout_marginRight="20dp"
-            android:text="TextView" />
+            android:gravity="center_vertical"
+            android:textColor="@color/springgreen"
+            android:text="帳戶金額"
+            android:textSize="18dp" />
     </LinearLayout>
-
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

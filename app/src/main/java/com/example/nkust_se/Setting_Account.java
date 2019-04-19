@@ -56,55 +56,14 @@ public class Setting_Account extends AppCompatActivity {
         add_btn.setOnClickListener(new View.OnClickListener() {  //新增帳戶按鈕被按下
             @Override
             public void onClick(View v) {
-
-                AlertDialog.Builder obj_Dialog = new AlertDialog.Builder(Setting_Account.this);  //彈出對話方塊
-                obj_Dialog.setTitle("新增帳戶");
-
-                TableLayout obj_TableLayout = new TableLayout(Setting_Account.this);
-                TableRow obj_TableRow1 = new TableRow(Setting_Account.this);
-                TableRow obj_TableRow2 = new TableRow(Setting_Account.this);
-
-                TextView obj_tv1 = new TextView(Setting_Account.this);
-                obj_tv1.setText("帳戶名稱:");
-                obj_tv1.setTextColor(Color.BLACK);
-                obj_tv1.setTextSize(18);
-                final EditText obj_et1 = new EditText(Setting_Account.this);
-                obj_et1.setWidth(300);
-                obj_et1.setInputType(InputType.TYPE_CLASS_TEXT);
-
-                TextView obj_tv2 = new TextView(Setting_Account.this);
-                obj_tv2.setText("金額:");
-                obj_tv2.setTextColor(Color.BLACK);
-                obj_tv2.setTextSize(18);
-                final EditText obj_et2 = new EditText(Setting_Account.this);
-                obj_et2.setWidth(300);
-
-                obj_TableRow1.addView(obj_tv1);
-                obj_TableRow1.addView(obj_et1);
-                obj_TableRow2.addView(obj_tv2);
-                obj_TableRow2.addView(obj_et2);
-
-                obj_TableLayout.addView(obj_TableRow1);
-                obj_TableLayout.addView(obj_TableRow2);
-
-                obj_Dialog.setView(obj_TableLayout);
-
-                obj_Dialog.setPositiveButton("儲存", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        AccountValues.put("帳戶名", obj_et1.getText().toString());
-                        AccountValues.put("金額", Integer.parseInt(obj_et2.getText().toString()));
-                        db.insert("AccountTB", null, AccountValues);
-                        showList();
-                    }
-                });
-                obj_Dialog.show();
+                add_account();
             }
         });
 
         account_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 final TextView _id = (TextView) view.findViewById(R.id.account_id);
                 final TextView name = (TextView) view.findViewById(R.id.account_name);
 
@@ -137,6 +96,7 @@ public class Setting_Account extends AppCompatActivity {
             }
         });
     }
+
     private void showList(){
         AccountCursor = db.query("AccountTB",new String[]{"_id","帳戶名","金額"},null,null,null,null,null);
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
@@ -151,5 +111,50 @@ public class Setting_Account extends AppCompatActivity {
         }
         SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.account_layout,new String[]{"_id","帳戶名","金額"},new int[]{R.id.account_id,R.id.account_name,R.id.account_money});
         account_list.setAdapter(SA);
+    }
+
+    private void add_account(){
+        AlertDialog.Builder obj_Dialog = new AlertDialog.Builder(Setting_Account.this);  //彈出對話方塊
+        obj_Dialog.setTitle("新增帳戶");
+
+        TableLayout obj_TableLayout = new TableLayout(Setting_Account.this);
+        TableRow obj_TableRow1 = new TableRow(Setting_Account.this);
+        TableRow obj_TableRow2 = new TableRow(Setting_Account.this);
+
+        TextView obj_tv1 = new TextView(Setting_Account.this);
+        obj_tv1.setText("帳戶名稱:");
+        obj_tv1.setTextColor(Color.BLACK);
+        obj_tv1.setTextSize(18);
+        final EditText obj_et1 = new EditText(Setting_Account.this);
+        obj_et1.setWidth(300);
+        obj_et1.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        TextView obj_tv2 = new TextView(Setting_Account.this);
+        obj_tv2.setText("金額:");
+        obj_tv2.setTextColor(Color.BLACK);
+        obj_tv2.setTextSize(18);
+        final EditText obj_et2 = new EditText(Setting_Account.this);
+        obj_et2.setWidth(300);
+
+        obj_TableRow1.addView(obj_tv1);
+        obj_TableRow1.addView(obj_et1);
+        obj_TableRow2.addView(obj_tv2);
+        obj_TableRow2.addView(obj_et2);
+
+        obj_TableLayout.addView(obj_TableRow1);
+        obj_TableLayout.addView(obj_TableRow2);
+
+        obj_Dialog.setView(obj_TableLayout);
+
+        obj_Dialog.setPositiveButton("儲存", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                AccountValues.put("帳戶名", obj_et1.getText().toString());
+                AccountValues.put("金額", Integer.parseInt(obj_et2.getText().toString()));
+                db.insert("AccountTB", null, AccountValues);
+                showList();
+            }
+        });
+        obj_Dialog.show();
     }
 }

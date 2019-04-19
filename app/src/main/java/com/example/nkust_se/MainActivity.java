@@ -26,8 +26,9 @@ public class MainActivity extends AppCompatActivity {
         db = DH.getWritableDatabase();
 
         AccountCursor = db.query("AccountTB",new String[]{"_id","帳戶名","金額"},null,null,null,null,null);
+        //查詢帳戶資料表
 
-        if (AccountCursor.getCount() == 0){  //若資料表count=0 5秒後跳轉帳戶初始化
+        if (AccountCursor.getCount() == 0){  //若帳戶資料表無資料 5秒後跳轉帳戶初始化頁面
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
             }, 5000);
-        }else {
+        }else {                              //若有帳戶資料表有資料  5秒後跳轉到主頁面
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
