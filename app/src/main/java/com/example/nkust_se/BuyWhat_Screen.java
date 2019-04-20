@@ -2,6 +2,7 @@ package com.example.nkust_se;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -105,11 +106,20 @@ public class BuyWhat_Screen extends AppCompatActivity {
 
                 SecondClassCursor = db.query("SecondClassTB",new String[]{"主分類","副分類"},"副分類=?",new String[]{sec_name.getText().toString()},null,null,null,null);
                 SecondClassCursor.moveToFirst();
-                Log.e("Total",SecondClassCursor.getString(0)+"-"+sec_name.getText().toString());
+
+                String margeclass = SecondClassCursor.getString(0)+"-"+sec_name.getText().toString();  //字串:主分類-副分類  ex:餐飲-早餐
 
                 Bundle bundle = getIntent().getExtras();
                 int cost = bundle.getInt("花費");  //抓出從Cost_Screen傳過來的數值
-                Log.e("花費",Integer.toString(cost));
+
+                Intent intent = new Intent();
+                intent.setClass(BuyWhat_Screen.this,Check_Screen.class);
+                Bundle check = new Bundle();  //Bundle用於資料傳遞 以key value方式儲存資料
+                check.putInt("花費",cost);
+                check.putString("品項",margeclass);    //將花費與品項名稱傳到下個頁面 做check的動作 準備存入資料表
+                intent.putExtras(check);
+
+                startActivity(intent);
             }
         });
 
