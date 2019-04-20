@@ -13,7 +13,6 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private final static String MainClassTB = "MainClassTB";  //主分類花費項目資料表
     private final static String SecondClassTB = "SecondClassTB";  //副分類花費項目資料表
     private final static int VS = 2;
-    ContentValues MainClassValues;
 
     public SQLiteDB(Context context){
         super(context,DB,null,VS);
@@ -38,7 +37,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     }
 
     public void CreateCostTable(SQLiteDatabase db){
-        String SQL = "CREATE TABLE IF NOT EXISTS "+CostTB+"(_id INTEGER primary key autoincrement,主分類 TEXT,副分類 TEXT,金額 INTEGER,帳戶 TEXT,日期 TEXT)";  //花費記錄資料表
+        String SQL = "CREATE TABLE IF NOT EXISTS "+CostTB+"(_id INTEGER primary key autoincrement,支出項目 TEXT,金額 INTEGER,帳戶 TEXT,日期 TEXT)";  //花費記錄資料表
         db.execSQL(SQL);
     }
 

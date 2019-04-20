@@ -57,9 +57,16 @@ public class Cost_Screen extends AppCompatActivity {
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotoBuywhat = new Intent();
-                gotoBuywhat.setClass(Cost_Screen.this,BuyWhat_Screen.class);
-                startActivity(gotoBuywhat);
+
+
+                Intent intent = new Intent();
+                intent.setClass(Cost_Screen.this,BuyWhat_Screen.class);
+
+                Bundle cost = new Bundle();  //Bundle用於資料傳遞 以key value方式儲存資料
+                cost.putInt("花費",Integer.parseInt(edit.getText().toString()));  //要將輸入的數字傳到下個頁面
+                intent.putExtras(cost);
+
+                startActivity(intent);
             }
         });
     }
