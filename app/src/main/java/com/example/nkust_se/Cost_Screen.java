@@ -11,6 +11,7 @@ public class Cost_Screen extends AppCompatActivity {
 
     Button back_btn;
     Button btn_ok;
+    Button btn_del;
     Button btn_1,btn_2,btn_3,btn_4,btn_5,btn_6,btn_7,btn_8,btn_9,btn_0;
     EditText edit;
 
@@ -34,6 +35,7 @@ public class Cost_Screen extends AppCompatActivity {
         btn_8 = (Button)findViewById(R.id.btn_8);
         btn_9 = (Button)findViewById(R.id.btn_9);
         btn_0 = (Button)findViewById(R.id.btn_0);
+        btn_del = (Button)findViewById(R.id.btn_del);
         edit = (EditText)findViewById(R.id.edit);
 
         btn_1.setOnClickListener(listener);
@@ -67,6 +69,13 @@ public class Cost_Screen extends AppCompatActivity {
                 intent.putExtras(cost);
 
                 startActivity(intent);
+            }
+        });
+
+        btn_del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edit.setText("");
             }
         });
     }
