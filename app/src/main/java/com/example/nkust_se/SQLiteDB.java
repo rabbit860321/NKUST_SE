@@ -38,7 +38,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     }
 
     public void CreateCostTable(SQLiteDatabase db){
-        String SQL = "CREATE TABLE IF NOT EXISTS "+CostTB+"(_id INTEGER primary key autoincrement,主分類 TEXT,副分類 TEXT,金額 INTEGER,日期 TEXT)";  //花費記錄資料表
+        String SQL = "CREATE TABLE IF NOT EXISTS "+CostTB+"(_id INTEGER primary key autoincrement,主分類 TEXT,副分類 TEXT,金額 INTEGER,帳戶 TEXT,日期 TEXT)";  //花費記錄資料表
         db.execSQL(SQL);
     }
 
