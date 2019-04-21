@@ -52,7 +52,7 @@
             android:text="TW$" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/et_cost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -74,18 +74,22 @@
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_width="match_parent"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:paddingBottom="20dp"
-            android:layout_weight="1"
             android:text="類別:"
             android:textSize="20dp" />
 
-        <Spinner
-            android:id="@+id/spinner3"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="1" />
+        <EditText
+            android:id="@+id/et_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="text"
+            android:gravity="right"
+            android:text="" />
     </LinearLayout>
 
     <LinearLayout
@@ -106,7 +110,7 @@
             android:textSize="20dp" />
 
         <Spinner
-            android:id="@+id/spinner7"
+            android:id="@+id/account_sp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="1" />
@@ -130,12 +134,12 @@
             android:textSize="20dp" />
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/et_re"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:gravity="right"
             android:text="" />
     </LinearLayout>
