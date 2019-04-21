@@ -32,8 +32,9 @@ public class Main_Screen extends AppCompatActivity {
     Calendar rightnow;
     Button expense_btn;
     Button income_btn;
-    ListView account_list;
+    ListView account_list,cost_list;
     Cursor AccountCursor;
+    Cursor CostCursor;
     int year;
     int month;
     int day;
@@ -53,6 +54,7 @@ public class Main_Screen extends AppCompatActivity {
         expense_btn = (Button)findViewById(R.id.expense_btn);
         income_btn = (Button)findViewById(R.id.income_btn);
         account_list = (ListView)findViewById(R.id.account_list);
+        cost_list = (ListView)findViewById(R.id.cost_list);
         rightnow = Calendar.getInstance();
 
         year = rightnow.get(Calendar.YEAR);     //取出年月日
@@ -60,6 +62,7 @@ public class Main_Screen extends AppCompatActivity {
         day = rightnow.get(Calendar.DAY_OF_MONTH);
 
         show_account_list();
+        show_todaycost();
 
         Date_View.setText(year+"年"+month+"月"+day+"日");
 
@@ -96,5 +99,24 @@ public class Main_Screen extends AppCompatActivity {
        }
        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.account_layout,new String[]{"_id","帳戶名","金額"},new int[]{R.id.account_id,R.id.account_name,R.id.account_money});
        account_list.setAdapter(SA);
+   }
+
+   private void show_todaycost(){
+       CostCursor = db.query("CostTB",new String[]{"_id","支出項目","金額","帳戶","日期","備註"},"日期=?",new String[]{year+"-"+month+"-"+day},null,null,null);
+       List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
+       CostCursor.moveToFirst();
+       for(int i= 0;i< CostCursor.getCount();i++){
+           Map<String,Object> item = new HashMap<String,Object>();
+           item.put("_id",CostCursor.getString(0));
+           item.put("支出項目",CostCursor.getString(1));
+           item.put("金額","$"+CostCursor.getString(2));
+           item.put("帳戶",CostCursor.getString(3));
+           item.put("日期",CostCursor.getString(4));
+           item.put("備註",CostCursor.getString(5));
+           items.add(item);
+           CostCursor.moveToNext();
+       }
+       SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_layout,new String[]{"支出項目","金額","帳戶","備註"},new int[]{R.id.cl,R.id.co,R.id.ac,R.id.re});
+       cost_list.setAdapter(SA);
    }
 }

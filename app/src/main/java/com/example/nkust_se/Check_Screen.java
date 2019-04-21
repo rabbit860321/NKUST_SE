@@ -1,6 +1,7 @@
 package com.example.nkust_se;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -94,7 +95,8 @@ public class Check_Screen extends AppCompatActivity {
                 CostValues.put("金額",et_cost.getText().toString());
                 CostValues.put("帳戶",AccountCursor1.getString(1));
                 CostValues.put("日期",year+"-"+month+"-"+day);
-                db.insert("CostTB", null, CostValues);
+                CostValues.put("備註",et_re.getText().toString());
+                db.insert("CostTB", null, CostValues);  //insert到花費紀錄資料表
 
                 int before_cost = Integer.parseInt(AccountCursor1.getString(2));  //原本有的錢
                 int cost_money = Integer.parseInt(et_cost.getText().toString());              //這次花費的金額
@@ -103,7 +105,11 @@ public class Check_Screen extends AppCompatActivity {
                 Log.e("ASD",AccountCursor1.getString(1)+""+AccountCursor1.getString(2));
 
                 AccountValues.put("金額",after_cost);
-                db.update("AccountTB",AccountValues,"_id" + "=" + AccountCursor1.getString(0),null);
+                db.update("AccountTB",AccountValues,"_id" + "=" + AccountCursor1.getString(0),null);  //update到帳戶資料表
+
+                Intent Intent = new Intent(Check_Screen.this,Main_Screen.class);
+                startActivity(Intent);
+                finish();
             }
         });
     }
