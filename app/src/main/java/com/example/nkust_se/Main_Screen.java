@@ -28,7 +28,7 @@ public class Main_Screen extends AppCompatActivity {
     SQLiteDB DH = null;
     SQLiteDatabase db;
 
-    TextView Date_View;
+    TextView Date_View,Total_view;
     Calendar rightnow;
     Button expense_btn;
     Button income_btn;
@@ -51,6 +51,7 @@ public class Main_Screen extends AppCompatActivity {
         getSupportActionBar().hide();
 
         Date_View = (TextView)findViewById(R.id.Date_View);
+        Total_view = (TextView)findViewById(R.id.Total_view);
         expense_btn = (Button)findViewById(R.id.expense_btn);
         income_btn = (Button)findViewById(R.id.income_btn);
         account_list = (ListView)findViewById(R.id.account_list);
@@ -102,6 +103,7 @@ public class Main_Screen extends AppCompatActivity {
    }
 
    private void show_todaycost(){
+       int total =0;   //今天花費總金額
        CostCursor = db.query("CostTB",new String[]{"_id","支出項目","金額","帳戶","日期","備註"},"日期=?",new String[]{year+"-"+month+"-"+day},null,null,null);
        List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
        CostCursor.moveToFirst();
@@ -114,9 +116,11 @@ public class Main_Screen extends AppCompatActivity {
            item.put("日期",CostCursor.getString(4));
            item.put("備註",CostCursor.getString(5));
            items.add(item);
+           total = total + Integer.parseInt(CostCursor.getString(2));
            CostCursor.moveToNext();
        }
        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_layout,new String[]{"支出項目","金額","帳戶","備註"},new int[]{R.id.cl,R.id.co,R.id.ac,R.id.re});
        cost_list.setAdapter(SA);
+       Total_view.setText(Total_view.getText()+Integer.toString(total)+"元");
    }
 }
