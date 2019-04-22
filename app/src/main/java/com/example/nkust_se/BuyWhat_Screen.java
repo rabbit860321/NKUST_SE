@@ -170,11 +170,20 @@ public class BuyWhat_Screen extends AppCompatActivity {
                 obj_Dialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        SecondClassValues.put("主分類",now_click_left);
-                        SecondClassValues.put("副分類",obj_et1.getText().toString());
-                        db.insert("SecondClassTB", null, SecondClassValues);
 
-                        show_cost2();
+                        if(now_click_left.equals("一般收入") || now_click_left.equals("投資收入") || now_click_left.equals("意外收入")) {
+                            income2Values.put("主分類",now_click_left);
+                            income2Values.put("副分類",obj_et1.getText().toString());
+                            db.insert("incomeTB2",null,income2Values);
+
+                            show_income2();
+                        }else{
+                            SecondClassValues.put("主分類",now_click_left);
+                            SecondClassValues.put("副分類",obj_et1.getText().toString());
+                            db.insert("SecondClassTB", null, SecondClassValues);
+
+                            show_cost2();
+                        }
                     }
                 });
                 obj_Dialog.show();
