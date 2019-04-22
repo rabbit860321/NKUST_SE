@@ -31,7 +31,6 @@ public class Main_Screen extends AppCompatActivity {
     TextView Date_View,Total_view;
     Calendar rightnow;
     Button expense_btn;
-    Button income_btn;
     ListView account_list,cost_list;
     Cursor AccountCursor;
     Cursor CostCursor;
@@ -53,7 +52,6 @@ public class Main_Screen extends AppCompatActivity {
         Date_View = (TextView)findViewById(R.id.Date_View);
         Total_view = (TextView)findViewById(R.id.Total_view);
         expense_btn = (Button)findViewById(R.id.expense_btn);
-        income_btn = (Button)findViewById(R.id.income_btn);
         account_list = (ListView)findViewById(R.id.account_list);
         cost_list = (ListView)findViewById(R.id.cost_list);
         rightnow = Calendar.getInstance();
@@ -68,15 +66,6 @@ public class Main_Screen extends AppCompatActivity {
         Date_View.setText(year+"年"+month+"月"+day+"日");
 
         expense_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent obj_Cost_screen = new Intent();
-                obj_Cost_screen.setClass(Main_Screen.this,Cost_Screen.class);
-                startActivity(obj_Cost_screen);
-            }
-        });
-
-        income_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent obj_Cost_screen = new Intent();
@@ -115,8 +104,10 @@ public class Main_Screen extends AppCompatActivity {
            item.put("帳戶",CostCursor.getString(3));
            item.put("日期",CostCursor.getString(4));
            item.put("備註",CostCursor.getString(5));
+           if(CostCursor.getString(1).indexOf("收入")<0){    //若支出項目沒有"收入"兩字 將金額加到total裡
+               total = total + Integer.parseInt(CostCursor.getString(2));
+           }
            items.add(item);
-           total = total + Integer.parseInt(CostCursor.getString(2));
            CostCursor.moveToNext();
        }
        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_layout,new String[]{"支出項目","金額","帳戶","備註"},new int[]{R.id.cl,R.id.co,R.id.ac,R.id.re});

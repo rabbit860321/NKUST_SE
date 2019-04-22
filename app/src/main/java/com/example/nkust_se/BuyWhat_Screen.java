@@ -31,18 +31,25 @@ public class BuyWhat_Screen extends AppCompatActivity {
     SQLiteDB DH = null;
     SQLiteDatabase db;
 
-    ListView main_list;
-    ListView sec_list;
+    ListView left_list;
+    ListView right_list;
 
     ContentValues MainClassValues;
     ContentValues SecondClassValues;
-    Cursor MainClassCursor;
-    Cursor SecondClassCursor;
+    ContentValues income1Values;
+    ContentValues income2Values;
+
+    Cursor cost1Cursor;
+    Cursor cost2Cursor;
+    Cursor income1Cursor;
+    Cursor income2Cursor;
 
     Button new_btn;
     Button back_btn;
+    Button btn1,btn2;
 
-    String now_click;  //用來儲存目前點到主類別 用來新增副類別用
+    String now_click_left;  //用來儲存左邊的列表點選的字串
+    String now_click_right;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +62,16 @@ public class BuyWhat_Screen extends AppCompatActivity {
         DH = new SQLiteDB(this);
         db = DH.getWritableDatabase();
 
-        main_list = (ListView)findViewById(R.id.main_list);
-        sec_list = (ListView)findViewById(R.id.sec_List);
+        left_list = (ListView)findViewById(R.id.left_list);
+        right_list = (ListView)findViewById(R.id.right_List);
         new_btn = (Button)findViewById(R.id.new_btn);
         back_btn = (Button)findViewById(R.id.back_btn);
+        btn1 = (Button)findViewById(R.id.btn1);
+        btn2 = (Button)findViewById(R.id.btn2);
         SecondClassValues = new ContentValues();
         MainClassValues = new ContentValues();
+        income1Values = new ContentValues();
+        income2Values = new ContentValues();
 
         back_btn.setOnClickListener(new View.OnClickListener() {  //返回建
             @Override
@@ -69,45 +80,59 @@ public class BuyWhat_Screen extends AppCompatActivity {
             }
         });
 
-        MainClassCursor = db.query("MainClassTB",new String[]{"_id","主分類"},null,null,null,null,null);
-        SecondClassCursor = db.query("SecondClassTB",new String[]{"_id","主分類","副分類"},null,null,null,null,null);
+        cost1Cursor = db.query("MainClassTB",new String[]{"_id","主分類"},null,null,null,null,null);
+        cost2Cursor = db.query("SecondClassTB",new String[]{"_id","主分類","副分類"},null,null,null,null,null);
+        income1Cursor = db.query("incomeTB1",new String[]{"_id","主分類"},null,null,null,null,null);
+        income2Cursor = db.query("incomeTB2",new String[]{"_id","主分類","副分類"},null,null,null,null,null);
 
-        /*查詢主要支出類別資料表與副支出類別資料表有無資料
-        若無,初始化這兩個資料表
+        /*查詢支出類別資料表1&支出類別資料表2&收入類別資料表1&收入類別資料表2有無資料
+        若無,初始化這4個資料表
          */
 
-        if(MainClassCursor.getCount() == 0){
+        if(cost1Cursor.getCount() == 0){
             MainClassInit();
         }
 
-        if(SecondClassCursor.getCount() == 0){
+        if(cost2Cursor.getCount() == 0){
             SecondClassInit();
         }
 
-        show_MainClass();  //顯示主要支出類別
+        if(income1Cursor.getCount() == 0){
+            income1Init();
+        }
 
-        /*主要支出類別列表被點選到,抓出主要類別名稱
-        並查詢該類別有哪些副支出類別
-         */
-        main_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        if(income2Cursor.getCount() == 0){
+            income2Init();
+        }
+
+        show_cost1();  //一進畫面 預設你要新增支出紀錄
+
+
+        left_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {           //當左邊列表被點擊時，判斷是支出還是收入
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final TextView main_name = (TextView) view.findViewById(android.R.id.text1);
-                now_click = main_name.getText().toString();    //用來新增副類別用
+                now_click_left = main_name.getText().toString();
 
-                show_SecClass();
+                if(now_click_left.equals("一般收入") || now_click_left.equals("投資收入") || now_click_left.equals("意外收入")) {
+                    show_income2();
+                }else{
+                    show_cost2();
+                }
+
             }
         });
 
-        sec_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        right_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {  /*點下副類別後 抓出該類別的名字與主類別合併成一個字串與金額傳到下個頁面*/
                 final TextView sec_name = (TextView) view.findViewById(android.R.id.text1);
+                now_click_right = sec_name.getText().toString();
 
-                SecondClassCursor = db.query("SecondClassTB",new String[]{"主分類","副分類"},"副分類=?",new String[]{sec_name.getText().toString()},null,null,null,null);
-                SecondClassCursor.moveToFirst();
+                cost2Cursor = db.query("SecondClassTB",new String[]{"主分類","副分類"},"副分類=?",new String[]{sec_name.getText().toString()},null,null,null,null);
+                cost2Cursor.moveToFirst();
 
-                String margeclass = SecondClassCursor.getString(0)+"-"+sec_name.getText().toString();  //字串:主分類-副分類  ex:餐飲-早餐
+                String margeclass = now_click_left + "-" + now_click_right;  //字串:主分類-副分類  ex:餐飲-早餐
 
                 Bundle bundle = getIntent().getExtras();
                 int cost = bundle.getInt("花費");  //抓出從Cost_Screen傳過來的數值
@@ -145,46 +170,113 @@ public class BuyWhat_Screen extends AppCompatActivity {
                 obj_Dialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        SecondClassValues.put("主分類",now_click);
+                        SecondClassValues.put("主分類",now_click_left);
                         SecondClassValues.put("副分類",obj_et1.getText().toString());
                         db.insert("SecondClassTB", null, SecondClassValues);
 
-                        show_SecClass();
+                        show_cost2();
                     }
                 });
                 obj_Dialog.show();
             }
         });
+
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                show_cost1();
+            }
+        });
+
+        btn2.setOnClickListener(new View.OnClickListener() {  //收入按鈕被點擊
+            @Override
+            public void onClick(View v) {
+                show_income1();
+            }
+        });
+
     }
 
-    private void show_MainClass(){
-        MainClassCursor = db.query("MainClassTB",new String[]{"_id","主分類"},null,null,null,null,null);
+    private void show_cost1(){
+        cost1Cursor = db.query("MainClassTB",new String[]{"主分類"},null,null,null,null,null);
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
-        MainClassCursor.moveToFirst();
-        for(int i= 0;i< MainClassCursor.getCount();i++){
+        cost1Cursor.moveToFirst();
+        for(int i= 0;i< cost1Cursor.getCount();i++){
             Map<String,Object> item = new HashMap<String,Object>();
-            item.put("_id",MainClassCursor.getString(0));
-            item.put("主分類",MainClassCursor.getString(1));
+            item.put("主分類",cost1Cursor.getString(0));
             items.add(item);
-            MainClassCursor.moveToNext();
+            cost1Cursor.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_list_item_1,new String[]{"_id","主分類"},new int[]{android.R.id.text2,android.R.id.text1});
-        main_list.setAdapter(SA);
+        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_list_item_1,new String[]{"主分類"},new int[]{android.R.id.text1});
+        left_list.setAdapter(SA);
     }
 
-    private void show_SecClass(){
-        SecondClassCursor = db.query("SecondClassTB",new String[]{"主分類","副分類"},"主分類=?",new String[]{now_click},null,null,null);
+    private void show_cost2(){
+        cost2Cursor = db.query("SecondClassTB",new String[]{"主分類","副分類"},"主分類=?",new String[]{now_click_left},null,null,null);
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
-        SecondClassCursor.moveToFirst();
-        for(int j= 0;j< SecondClassCursor.getCount();j++){
+        cost2Cursor.moveToFirst();
+        for(int j= 0;j< cost2Cursor.getCount();j++){
             Map<String,Object> item = new HashMap<String,Object>();
-            item.put("主分類",SecondClassCursor.getString(0));
-            item.put("副分類",SecondClassCursor.getString(1));
+            item.put("主分類",cost2Cursor.getString(0));
+            item.put("副分類",cost2Cursor.getString(1));
             items.add(item);
-            SecondClassCursor.moveToNext();
+            cost2Cursor.moveToNext();
         }
         SimpleAdapter SA = new SimpleAdapter(BuyWhat_Screen.this,items,android.R.layout.simple_list_item_1,new String[]{"副分類"},new int[]{android.R.id.text1});
-        sec_list.setAdapter(SA);
+        right_list.setAdapter(SA);
+    }
+
+    private void show_income1(){
+        income1Cursor = db.query("incomeTB1",new String[]{"主分類"},null,null,null,null,null);
+        List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
+        income1Cursor.moveToFirst();
+        for(int i= 0;i< income1Cursor.getCount();i++){
+            Map<String,Object> item = new HashMap<String,Object>();
+            item.put("主分類",income1Cursor.getString(0));
+            items.add(item);
+            income1Cursor.moveToNext();
+        }
+        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_list_item_1,new String[]{"主分類"},new int[]{android.R.id.text1});
+        left_list.setAdapter(SA);
+    }
+
+    private void show_income2(){
+        income2Cursor = db.query("incomeTB2",new String[]{"主分類","副分類"},"主分類=?",new String[]{now_click_left},null,null,null);
+        List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
+        income2Cursor.moveToFirst();
+        for(int i= 0;i< income2Cursor.getCount();i++){
+            Map<String,Object> item = new HashMap<String,Object>();
+            item.put("主分類",income2Cursor.getString(0));
+            item.put("副分類",income2Cursor.getString(1));
+            items.add(item);
+            income2Cursor.moveToNext();
+        }
+        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_list_item_1,new String[]{"副分類"},new int[]{android.R.id.text1});
+        right_list.setAdapter(SA);
+    }
+
+    private void MainClassInit(){
+
+        MainClassValues.put("主分類", "餐飲");
+        db.insert("MainClassTB", null, MainClassValues);
+        MainClassValues.put("主分類", "服飾美容");
+        db.insert("MainClassTB", null, MainClassValues);
+        MainClassValues.put("主分類", "居家生活");
+        db.insert("MainClassTB", null, MainClassValues);
+        MainClassValues.put("主分類", "交通");
+        db.insert("MainClassTB", null, MainClassValues);
+        MainClassValues.put("主分類", "學習");
+        db.insert("MainClassTB", null, MainClassValues);
+        MainClassValues.put("主分類", "休閒");
+        db.insert("MainClassTB", null, MainClassValues);
+        MainClassValues.put("主分類", "3C");
+        db.insert("MainClassTB", null, MainClassValues);
+        MainClassValues.put("主分類", "汽機車");
+        db.insert("MainClassTB", null, MainClassValues);
+        MainClassValues.put("主分類", "醫療");
+        db.insert("MainClassTB", null, MainClassValues);
+        MainClassValues.put("主分類", "其他");
+        db.insert("MainClassTB", null, MainClassValues);
     }
 
     private void SecondClassInit(){
@@ -296,29 +388,43 @@ public class BuyWhat_Screen extends AppCompatActivity {
         db.insert("SecondClassTB",null,SecondClassValues);
     }
 
-    private void MainClassInit(){
 
-        MainClassValues.put("主分類", "餐飲");
-        db.insert("MainClassTB", null, MainClassValues);
-        MainClassValues.put("主分類", "服飾美容");
-        db.insert("MainClassTB", null, MainClassValues);
-        MainClassValues.put("主分類", "居家生活");
-        db.insert("MainClassTB", null, MainClassValues);
-        MainClassValues.put("主分類", "交通");
-        db.insert("MainClassTB", null, MainClassValues);
-        MainClassValues.put("主分類", "學習");
-        db.insert("MainClassTB", null, MainClassValues);
-        MainClassValues.put("主分類", "休閒");
-        db.insert("MainClassTB", null, MainClassValues);
-        MainClassValues.put("主分類", "3C");
-        db.insert("MainClassTB", null, MainClassValues);
-        MainClassValues.put("主分類", "汽機車");
-        db.insert("MainClassTB", null, MainClassValues);
-        MainClassValues.put("主分類", "醫療");
-        db.insert("MainClassTB", null, MainClassValues);
-        MainClassValues.put("主分類", "其他");
-        db.insert("MainClassTB", null, MainClassValues);
+    private void income1Init(){
+        income1Values.put("主分類","一般收入");
+        db.insert("incomeTB1",null,income1Values);
+        income1Values.put("主分類","投資收入");
+        db.insert("incomeTB1",null,income1Values);
+        income1Values.put("主分類","意外收入");
+        db.insert("incomeTB1",null,income1Values);
     }
 
-
+    private void income2Init(){
+        income2Values.put("主分類","一般收入");
+        income2Values.put("副分類","公司薪資");
+        db.insert("incomeTB2",null,income2Values);
+        income2Values.put("主分類","一般收入");
+        income2Values.put("副分類","打工");
+        db.insert("incomeTB2",null,income2Values);
+        income2Values.put("主分類","一般收入");
+        income2Values.put("副分類","零用錢");
+        db.insert("incomeTB2",null,income2Values);
+        income2Values.put("主分類","投資收入");
+        income2Values.put("副分類","定存");
+        db.insert("incomeTB2",null,income2Values);
+        income2Values.put("主分類","投資收入");
+        income2Values.put("副分類","股票");
+        db.insert("incomeTB2",null,income2Values);
+        income2Values.put("主分類","投資收入");
+        income2Values.put("副分類","基金");
+        db.insert("incomeTB2",null,income2Values);
+        income2Values.put("主分類","意外收入");
+        income2Values.put("副分類","統一發票中獎");
+        db.insert("incomeTB2",null,income2Values);
+        income2Values.put("主分類","意外收入");
+        income2Values.put("副分類","樂透中獎");
+        db.insert("incomeTB2",null,income2Values);
+        income2Values.put("主分類","意外收入");
+        income2Values.put("副分類","撿到錢");
+        db.insert("incomeTB2",null,income2Values);
+    }
 }

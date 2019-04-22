@@ -98,18 +98,24 @@ public class Check_Screen extends AppCompatActivity {
                 CostValues.put("備註",et_re.getText().toString());
                 db.insert("CostTB", null, CostValues);  //insert到花費紀錄資料表
 
-                int before_cost = Integer.parseInt(AccountCursor1.getString(2));  //原本有的錢
-                int cost_money = Integer.parseInt(et_cost.getText().toString());              //這次花費的金額
-                int after_cost = before_cost - cost_money;                                    //相減
+                int money = Integer.parseInt(AccountCursor1.getString(2));  //你選擇的帳戶原本有的金額
 
-                Log.e("ASD",AccountCursor1.getString(1)+""+AccountCursor1.getString(2));
+                String str = et_class.getText().toString();
+                if(str.indexOf("收入")>=0){  //判斷支出項目中的字串是否有"收入"兩字存在  要將原本帳戶的錢相加
+                    int income = Integer.parseInt(et_cost.getText().toString());
+                    money += income;
+                    AccountValues.put("金額",money);
+                    db.update("AccountTB",AccountValues,"_id" + "=" + AccountCursor1.getString(0),null);  //update到帳戶資料表
+                }else{                                        //支出 相減
+                    int cost = Integer.parseInt(et_cost.getText().toString());
+                    money -= cost;
+                    AccountValues.put("金額",money);
+                    db.update("AccountTB",AccountValues,"_id" + "=" + AccountCursor1.getString(0),null);  //update到帳戶資料表
+                }
 
-                AccountValues.put("金額",after_cost);
-                db.update("AccountTB",AccountValues,"_id" + "=" + AccountCursor1.getString(0),null);  //update到帳戶資料表
-
+                finish();
                 Intent Intent = new Intent(Check_Screen.this,Main_Screen.class);
                 startActivity(Intent);
-                finish();
             }
         });
     }

@@ -12,6 +12,9 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private final static String CostTB = "CostTB";            //花費記錄資料表名稱
     private final static String MainClassTB = "MainClassTB";  //主分類花費項目資料表
     private final static String SecondClassTB = "SecondClassTB";  //副分類花費項目資料表
+
+    private final static String incomeTB1 = "incomeTB1";         //收入資料表1
+    private final static String incomeTB2 = "incomeTB2";
     private final static int VS = 2;
 
     public SQLiteDB(Context context){
@@ -24,6 +27,8 @@ public class SQLiteDB extends SQLiteOpenHelper {
         CreateCostTable(db);
         CreateMainClassTable(db);
         CreateSecondClassTable(db);
+        Createincome1Table(db);
+        Createincome2Table(db);
     }
 
     @Override
@@ -48,6 +53,16 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
     public void CreateSecondClassTable(SQLiteDatabase db){
         String SQL = "CREATE TABLE IF NOT EXISTS "+SecondClassTB+"(_id INTEGER primary key autoincrement,主分類 TEXT,副分類 TEXT)";  //副分類花費項目資料表
+        db.execSQL(SQL);
+    }
+
+    public void Createincome1Table(SQLiteDatabase db){
+        String SQL = "CREATE TABLE IF NOT EXISTS "+incomeTB1+"(_id INTEGER primary key autoincrement,主分類 TEXT)";
+        db.execSQL(SQL);
+    }
+
+    public void Createincome2Table(SQLiteDatabase db){
+        String SQL = "CREATE TABLE IF NOT EXISTS "+incomeTB2+"(_id INTEGER primary key autoincrement,主分類 TEXT,副分類 TEXT)";
         db.execSQL(SQL);
     }
 }
