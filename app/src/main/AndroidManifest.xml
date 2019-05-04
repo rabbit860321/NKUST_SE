@@ -9,10 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Screen_Chart"></activity>
-        <activity android:name=".Screen_History" />
-        <activity android:name=".Screen_Keyboard" />
-        <activity android:name=".Screen_SelClass" />
         <activity android:name=".Screen_Main" />
         <activity android:name=".Screen_Setting" />
         <activity android:name=".Screen_logo">
