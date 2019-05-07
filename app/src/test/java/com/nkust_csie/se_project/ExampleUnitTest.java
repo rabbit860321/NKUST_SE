@@ -1,4 +1,4 @@
-package com.example.nkust_se;
+package com.nkust_csie.se_project;
 
 import org.junit.Test;
 

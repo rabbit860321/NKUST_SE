@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.nkust_se">
+    package="com.nkust_csie.se_project">
 
     <application
         android:allowBackup="true"
@@ -9,12 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Check_Screen"></activity>
-        <activity android:name=".BuyWhat_Screen" />
-        <activity android:name=".Cost_Screen" />
-        <activity android:name=".Main_Screen" />
-        <activity android:name=".Setting_Account" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Screen_Main" />
+        <activity android:name=".Screen_Setting" />
+        <activity android:name=".Screen_logo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
