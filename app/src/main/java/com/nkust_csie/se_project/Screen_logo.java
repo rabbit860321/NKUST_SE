@@ -9,5 +9,8 @@ public class Screen_logo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.screen_logo);
+
+        // 隱藏title Bar
+        getSupportActionBar().hide();
     }
 }

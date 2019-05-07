@@ -9,5 +9,10 @@ public class Screen_Setting extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.screen_setting);
+
+        // 隱藏title Bar
+        getSupportActionBar().hide();
+
+
     }
 }
