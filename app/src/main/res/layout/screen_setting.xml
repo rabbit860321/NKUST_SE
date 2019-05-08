@@ -102,7 +102,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="收入描述    收入帳戶    收入金額    幾月幾次    發薪日"
+                        android:textSize="13dp"
+                        android:text="收入描述 收入帳戶 收入金額 幾月幾次 發薪日"
                         android:textColor="@color/black" />
 
                     <Button
@@ -146,7 +147,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="帳單描述  支出帳戶  支出金額  幾月幾次    付款日"
+                        android:textSize="13dp"
+                        android:text="帳單描述 支出帳戶 支出金額 幾月幾次 付款日"
                         android:textColor="@color/black" />
 
                     <Button
@@ -216,16 +218,16 @@
                     android:id="@+id/txv_costLimit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
+                    android:layout_weight="5"
                     android:text="每日金額上限提醒:"
                     android:textColor="@color/black"
-                    android:textSize="18dp" />
+                    android:textSize="13dp" />
 
                 <EditText
                     android:id="@+id/edt_costLimit"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0"
+                    android:layout_weight="3"
                     android:ems="10"
                     android:inputType="number"
                     android:text="" />
