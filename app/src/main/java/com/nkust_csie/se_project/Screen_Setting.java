@@ -3,8 +3,11 @@ package com.nkust_csie.se_project;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -13,10 +16,15 @@ import org.xmlpull.v1.XmlPullParser;
 
 public class Screen_Setting extends AppCompatActivity {
 
+    SQLiteDB DH = null;
+    SQLiteDatabase db;
+
     Button btn_account;
     Button btn_fixedIncome;
     Button btn_fixedBill;
     Button btn_bill;
+
+    Cursor settingCursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +35,16 @@ public class Screen_Setting extends AppCompatActivity {
         // 隱藏title Bar
         getSupportActionBar().hide();
 
+        DH = new SQLiteDB(this);
+        db = DH.getWritableDatabase();
+
         btn_account = (Button)findViewById(R.id.btn_account);
         btn_fixedIncome = (Button)findViewById(R.id.btn_fixedIncome);
         btn_fixedBill = (Button)findViewById(R.id.btn_fixedBill);
         btn_bill = (Button)findViewById(R.id.btn_bill);
+
+        settingCursor = db.query("tb_setting",null,null,null,null,null,null);  //查詢tb_setting所有資料
+        Log.e("TAG","tb_setting裡有"+settingCursor.getCount()+"筆資料");
 
         btn_account.setOnClickListener(new View.OnClickListener() {
             @Override
