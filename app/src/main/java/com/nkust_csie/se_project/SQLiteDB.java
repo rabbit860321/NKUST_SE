@@ -26,7 +26,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     }
 
     public void Create_tb_setting(SQLiteDatabase db){
-        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_setting+"(_id INTEGER primary key autoincrement,分類屬性 TEXT,描述 TEXT,帳戶 TEXT,金額 REAL,幾個月幾次 TEXT,日期 TEXT,為常用帳戶 BLOB)";
+        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_setting+"(_id INTEGER primary key autoincrement,分類屬性 TEXT,描述 TEXT,帳戶 TEXT,金額 REAL,幾個月幾次 TEXT,日期 INTEGER,為常用帳戶 BLOB)";
         db.execSQL(SQL);
     }
 }
