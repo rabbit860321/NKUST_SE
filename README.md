@@ -1,4 +1,4 @@
-# NKUST_SE
+# 四下軟體工程專案
 
 ## --2019/05/04 Screen_logo & Screen_setting 布局--
 ![image](https://github.com/rabbit860321/NKUST_SE/blob/master/20190504-1.png)
