@@ -59,7 +59,7 @@
             android:layout_weight="3"
             android:ems="10"
             android:hint="支出金額"
-            android:inputType="text" />
+            android:inputType="number" />
 
         <Spinner
             android:id="@+id/fixedbill_count"
