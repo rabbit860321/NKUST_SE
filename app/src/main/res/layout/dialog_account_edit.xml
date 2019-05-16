@@ -12,7 +12,7 @@
         android:background="@color/colorPrimary"
         android:textColor="@color/white"
         android:textSize="30dp"
-        android:text="設定帳戶" />
+        android:text="編輯帳戶" />
 
     <EditText
         android:id="@+id/account_name"

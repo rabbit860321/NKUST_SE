@@ -24,7 +24,7 @@ public class Screen_Main1 extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("  錢包        $5000");
+        getSupportActionBar().setTitle(" ");
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
