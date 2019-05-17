@@ -4,11 +4,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".Screen_Main1"
+            android:label="@string/title_activity_screen__main1"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Screen_Main" />
         <activity android:name=".Screen_Setting" />
         <activity android:name=".Screen_logo">
