@@ -25,7 +25,7 @@ public class Screen_logo extends AppCompatActivity {
         DH = new SQLiteDB(this);
         db = DH.getWritableDatabase();
 
-        cursor = db.query("tb_account",null,null,null,null,null,null);
+        cursor = db.query("tb_setting",null,null,null,null,null,null);
 
         if(cursor.getCount() == 0){
             new Handler().postDelayed(new Runnable() {  //5秒後跳轉到setting畫面
