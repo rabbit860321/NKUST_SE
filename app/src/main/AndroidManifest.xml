@@ -8,10 +8,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Screen_Check"></activity>
+        <activity android:name=".Screen_Select_Class" />
         <activity
             android:name=".Screen_Main1"
             android:label="@string/title_activity_screen__main1"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Screen_Main" />
         <activity android:name=".Screen_Setting" />
         <activity android:name=".Screen_logo">

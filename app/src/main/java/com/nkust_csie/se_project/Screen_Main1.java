@@ -1,5 +1,6 @@
 package com.nkust_csie.se_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,7 +25,7 @@ public class Screen_Main1 extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(" ");
+        getSupportActionBar().setTitle("錢包:878787元");
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -60,6 +61,9 @@ public class Screen_Main1 extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.btn_new) {
+            final Intent gotoselclass = new Intent(Screen_Main1.this,Screen_Select_Class.class);
+            startActivity(gotoselclass);
+            finish();
             return true;
         }
 
