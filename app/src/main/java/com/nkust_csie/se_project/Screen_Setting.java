@@ -164,18 +164,18 @@ public class Screen_Setting extends AppCompatActivity {
         dialog.show();
     }
     private void show_account_list(){
-        settingCursor = db.query("tb_setting",new String[]{"_id","帳戶","金額"},null,null,null,null,null);
+        settingCursor = db.query("tb_setting",new String[]{"_id","Account","Money"},null,null,null,null,null);
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
         settingCursor.moveToFirst();
         for(int i= 0;i< settingCursor.getCount();i++){
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",settingCursor.getString(0));
-            item.put("帳戶",settingCursor.getString(1));
-            item.put("金額",settingCursor.getString(2));
+            item.put("Account",settingCursor.getString(1));
+            item.put("Money",settingCursor.getString(2));
             items.add(item);
             settingCursor.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.account_list_layout,new String[]{"_id","帳戶","金額"},new int[]{R.id.account_list_id,R.id.account_list_name,R.id.account_list_money});
+        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.account_list_layout,new String[]{"_id","Account","Money"},new int[]{R.id.account_list_id,R.id.account_list_name,R.id.account_list_money});
         itlist_account.setAdapter(SA);
     }
 }

@@ -1,6 +1,7 @@
 package com.nkust_csie.se_project;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -61,34 +62,54 @@ public class Screen_Select_Class extends AppCompatActivity {
             }
         });
 
+        list_cost_class2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final TextView sec_name = (TextView) view.findViewById(android.R.id.text1);
+                now_click_right = sec_name.getText().toString();
+
+                String margeclass = now_click_left + "-" + now_click_right; //字串:主分類-副分類  ex:餐飲-早餐
+
+                Intent intent = new Intent();
+                intent.setClass(Screen_Select_Class.this,Screen_Check.class);
+
+                Bundle b = new Bundle();  //Bundle用於資料傳遞 以key value方式儲存資料
+                b.putString("類別",margeclass);  //將margeclass字串傳入ckeck畫面
+                intent.putExtras(b);
+
+                finish();
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void show_costClass1() {
-        cs = db.query("tb_cost_class1",new String[]{"主分類"},null,null,null,null,null);
+        cs = db.query("tb_cost_class1",new String[]{"mainclass"},null,null,null,null,null);
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
         cs.moveToFirst();
         for(int i= 0;i< cs.getCount();i++){
             Map<String,Object> item = new HashMap<String,Object>();
-            item.put("主分類",cs.getString(0));
+            item.put("mainclass",cs.getString(0));
             items.add(item);
             cs.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_list_item_1,new String[]{"主分類"},new int[]{android.R.id.text1});
+        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_list_item_1,new String[]{"mainclass"},new int[]{android.R.id.text1});
         list_cost_class1.setAdapter(SA);
     }
 
     private void show_costClass2(){
-        cs = db.query("tb_cost_class2",new String[]{"主分類","副分類"},"主分類=?",new String[]{now_click_left},null,null,null);
+        cs = db.query("tb_cost_class2",new String[]{"mainclass","subclass"},"mainclass=?",new String[]{now_click_left},null,null,null);
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
         cs.moveToFirst();
         for(int j= 0;j< cs.getCount();j++){
             Map<String,Object> item = new HashMap<String,Object>();
-            item.put("主分類",cs.getString(0));
-            item.put("副分類",cs.getString(1));
+            item.put("mainclass",cs.getString(0));
+            item.put("subclass",cs.getString(1));
             items.add(item);
             cs.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_list_item_1,new String[]{"副分類"},new int[]{android.R.id.text1});
+        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_list_item_1,new String[]{"subclass"},new int[]{android.R.id.text1});
         list_cost_class2.setAdapter(SA);
     }
 }
