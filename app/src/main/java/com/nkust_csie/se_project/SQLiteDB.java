@@ -12,6 +12,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private final static String tb_setting = "tb_setting"; //資料表名稱
     private final static String tb_cost_class1 = "tb_cost_class1";
     private final static String tb_cost_class2 = "tb_cost_class2";
+    private final static String tb_cost_history = "tb_cost_history";
 
 
     public SQLiteDB(Context context) {
@@ -23,6 +24,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
         Create_tb_setting(db);
         Create_tb_cost_class1(db);
         Create_tb_cost_class2(db);
+        Create_tb_cost_history(db);
     }
 
     @Override
@@ -42,6 +44,10 @@ public class SQLiteDB extends SQLiteOpenHelper {
         String SQL = "CREATE TABLE IF NOT EXISTS "+tb_cost_class2+"(_id INTEGER primary key autoincrement,mainclass TEXT,subclass TEXT)";  //副分類花費項目資料表
         db.execSQL(SQL);
     }
+    public void Create_tb_cost_history(SQLiteDatabase db){
+        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_cost_history+"(_id INTEGER primary key autoincrement,Date INTEGER,Category TEXT,Description TEXT,Account TEXT,Money FLOAT,PayorEarn TEXT,FavoriteChecked BOOLEAN)";
+        db.execSQL(SQL);
+    }
 
 
     //Insert data into database; this is for add a new account.
@@ -53,6 +59,28 @@ public class SQLiteDB extends SQLiteOpenHelper {
         contentValues.put("Money",Float.parseFloat(money));
 
         long result = db.insert(tb_setting, null, contentValues);
+
+        if(result == -1){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    public boolean insertData(String date, String category,String description,String account,String money,String payorEarn,Boolean favoriteChecked){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("Date",Integer.parseInt(date));
+        contentValues.put("Category",category);
+        contentValues.put("Description",description);
+        contentValues.put("Account",account);
+        contentValues.put("Money",Float.parseFloat(money));
+        contentValues.put("PayorEarn",payorEarn);
+        contentValues.put("FavoriteChecked",favoriteChecked);
+
+        long result = db.insert(tb_cost_history, null, contentValues);
 
         if(result == -1){
             return false;

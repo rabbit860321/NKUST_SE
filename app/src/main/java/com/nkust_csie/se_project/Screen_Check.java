@@ -6,22 +6,28 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.LongSparseArray;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+
+import java.util.Calendar;
 
 public class Screen_Check extends AppCompatActivity {
 
     SQLiteDB DH = null;
     SQLiteDatabase db;
 
-    EditText edit_cost_name,edit_cost_money;
+    EditText edit_cost_name,edit_cost_money,edit_re;
     Spinner spinner_account;
     Button btn_del;
     Button btn_1,btn_2,btn_3,btn_4,btn_5,btn_6,btn_7,btn_8,btn_9,btn_0;
-
+    Button btn_save_cost;
+    CheckBox checkbox_fav;
+    Calendar today;
 
     Cursor cs;
 
@@ -36,9 +42,13 @@ public class Screen_Check extends AppCompatActivity {
         DH = new SQLiteDB(this);
         db = DH.getWritableDatabase();
 
+        today = Calendar.getInstance();
         edit_cost_name = (EditText)findViewById(R.id.edit_cost_name);
         edit_cost_money = (EditText)findViewById(R.id.edit_cost_money);
+        edit_re = (EditText)findViewById(R.id.edit_re);
         spinner_account = (Spinner)findViewById(R.id.spinner_account);
+        checkbox_fav = (CheckBox)findViewById(R.id.checkbox_fav);
+        btn_save_cost = (Button)findViewById(R.id.btn_save_cost);
         btn_1 = (Button)findViewById(R.id.btn_1);
         btn_2 = (Button)findViewById(R.id.btn_2);
         btn_3 = (Button)findViewById(R.id.btn_3);
@@ -51,8 +61,10 @@ public class Screen_Check extends AppCompatActivity {
         btn_0 = (Button)findViewById(R.id.btn_0);
         btn_del = (Button)findViewById(R.id.btn_del);
 
+        final String YMD = ""+today.get(Calendar.YEAR)+""+today.get(Calendar.MONTH)+1+""+today.get(Calendar.DAY_OF_MONTH);   //今天的年月日
+
         Bundle bundle = getIntent().getExtras();
-        String cost_class_name = bundle.getString("類別");  //抓出從select_class畫面丟過來的類別名稱
+        final String cost_class_name = bundle.getString("類別");  //抓出從select_class畫面丟過來的類別名稱
 
         //Log.e("TAG",cost_class_name);
 
@@ -88,6 +100,20 @@ public class Screen_Check extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 edit_cost_money.setText("");
+            }
+        });
+
+        btn_save_cost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String account_name = cs.getString(3);
+
+                DH.insertData(YMD,cost_class_name,edit_re.getText().toString(),account_name,edit_cost_money.getText().toString(),"支出",checkbox_fav.isChecked());
+                
+                Log.e("LOG",""+YMD+cost_class_name+edit_re.getText().toString()+account_name+edit_cost_money.getText().toString()+"支出"+checkbox_fav.isChecked());
+                final Intent gotomain = new Intent(Screen_Check.this,Screen_Main1.class);
+                startActivity(gotomain);
+                finish();
             }
         });
 
