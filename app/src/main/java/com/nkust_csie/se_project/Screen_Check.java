@@ -61,7 +61,8 @@ public class Screen_Check extends AppCompatActivity {
         btn_0 = (Button)findViewById(R.id.btn_0);
         btn_del = (Button)findViewById(R.id.btn_del);
 
-        final String YMD = ""+today.get(Calendar.YEAR)+""+today.get(Calendar.MONTH)+1+""+today.get(Calendar.DAY_OF_MONTH);   //今天的年月日
+        int M = today.get(Calendar.MONTH)+1;
+        final String YMD = ""+today.get(Calendar.YEAR)+""+M+""+today.get(Calendar.DAY_OF_MONTH);   //今天的年月日
 
         Bundle bundle = getIntent().getExtras();
         final String cost_class_name = bundle.getString("類別");  //抓出從select_class畫面丟過來的類別名稱
@@ -109,7 +110,7 @@ public class Screen_Check extends AppCompatActivity {
                 String account_name = cs.getString(3);
 
                 DH.insertData(YMD,cost_class_name,edit_re.getText().toString(),account_name,edit_cost_money.getText().toString(),"支出",checkbox_fav.isChecked());
-                
+
                 Log.e("LOG",""+YMD+cost_class_name+edit_re.getText().toString()+account_name+edit_cost_money.getText().toString()+"支出"+checkbox_fav.isChecked());
                 final Intent gotomain = new Intent(Screen_Check.this,Screen_Main1.class);
                 startActivity(gotomain);
