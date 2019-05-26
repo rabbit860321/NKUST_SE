@@ -51,13 +51,14 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
 
     //Insert data into database; this is for add a new account.
-    public boolean insertData(String account, String money){
+    public Boolean insertData(String account, String money){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put("Account",account);
         contentValues.put("Money",Float.parseFloat(money));
 
+        //db.insert(tb_setting, null, contentValues);
         long result = db.insert(tb_setting, null, contentValues);
 
         if(result == -1){

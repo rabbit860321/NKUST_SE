@@ -63,7 +63,9 @@ public class Screen_Setting extends AppCompatActivity {
         settingCursor = db.query("tb_setting",null,null,null,null,null,null);  //查詢tb_setting所有資料
         Log.e("TAG","tb_setting裡有"+settingCursor.getCount()+"筆資料");
 
-        show_account_list();
+        if(settingCursor.getCount() != 0){
+            show_account_list();
+        }
 
         btn_account.setOnClickListener(new View.OnClickListener() {  //新增帳戶
             @Override
@@ -150,6 +152,9 @@ public class Screen_Setting extends AppCompatActivity {
                 switch (x) {
                     case 1:  //設定帳戶
                         DH.insertData(account_name.getText().toString(),account_money.getText().toString());
+                        /*settingvalue.put("Account",account_name.getText().toString());
+                        settingvalue.put("Money",Float.parseFloat(account_money.getText().toString()));
+                        db.insert("tb_setting", null, settingvalue);*/
                         show_account_list();
                         break;
                 }
@@ -164,14 +169,14 @@ public class Screen_Setting extends AppCompatActivity {
         dialog.show();
     }
     private void show_account_list(){
-        settingCursor = db.query("tb_setting",new String[]{"_id","Account","Money"},null,null,null,null,null);
+        settingCursor = db.query("tb_setting",null,null,null,null,null,null);
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
         settingCursor.moveToFirst();
         for(int i= 0;i< settingCursor.getCount();i++){
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",settingCursor.getString(0));
-            item.put("Account",settingCursor.getString(1));
-            item.put("Money",settingCursor.getString(2));
+            item.put("Account",settingCursor.getString(3));
+            item.put("Money",settingCursor.getString(4));
             items.add(item);
             settingCursor.moveToNext();
         }
