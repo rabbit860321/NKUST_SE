@@ -31,7 +31,7 @@ public class Screen_Main1 extends AppCompatActivity
     SQLiteDB DH = null;
     SQLiteDatabase db;
 
-    ListView list_today_cost;
+    ListView list_today_cost,list_account;
     Cursor cs;
     Calendar today;
 
@@ -42,7 +42,7 @@ public class Screen_Main1 extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("錢包:878787元");
+        getSupportActionBar().setTitle("");
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -54,12 +54,13 @@ public class Screen_Main1 extends AppCompatActivity
         db = DH.getWritableDatabase();
         today = Calendar.getInstance();
         list_today_cost = (ListView)findViewById(R.id.list_today_cost);
+        list_account = (ListView)findViewById(R.id.list_account);
 
         int M = today.get(Calendar.MONTH)+1;
         final String YMD = ""+today.get(Calendar.YEAR)+""+M+""+today.get(Calendar.DAY_OF_MONTH);   //今天的年月日
 
-        show_list_today_cost(YMD);
-
+        show_list_today_cost(YMD);  //顯示今日花費
+        show_list_account();        //顯示當前帳戶資料
     }
 
     @Override
@@ -137,5 +138,21 @@ public class Screen_Main1 extends AppCompatActivity
         }
         SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_list_layout,new String[]{"Category","Money","Account","Description"},new int[]{R.id.cl,R.id.co,R.id.ac,R.id.re});
         list_today_cost.setAdapter(SA);
+    }
+
+    private void show_list_account(){
+        cs = db.query("tb_setting",null,null,null,null,null,null);
+        List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
+        cs.moveToFirst();
+        for(int i= 0;i< cs.getCount();i++){
+            Map<String,Object> item = new HashMap<String,Object>();
+            item.put("_id",cs.getString(0));
+            item.put("Account",cs.getString(3));
+            item.put("Money",cs.getString(4));
+            items.add(item);
+            cs.moveToNext();
+        }
+        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.account_list_layout,new String[]{"_id","Account","Money"},new int[]{R.id.account_list_id,R.id.account_list_name,R.id.account_list_money});
+        list_account.setAdapter(SA);
     }
 }

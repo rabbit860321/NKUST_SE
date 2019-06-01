@@ -11,6 +11,16 @@
     tools:showIn="@layout/app_bar_screen__main1">
 
     <ListView
+        android:id="@+id/list_account"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:background="@color/white"
+        />
+
+    <ListView
         android:id="@+id/list_today_cost"
         android:layout_width="match_parent"
         android:layout_height="300dp"
@@ -33,4 +43,5 @@
         app:backgroundTint="@color/white"
         app:elevation="6dp"
         app:pressedTranslationZ="16dp" />
+
 </RelativeLayout>
