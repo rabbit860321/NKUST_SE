@@ -110,7 +110,10 @@ public class Screen_Check extends AppCompatActivity {
                 String account_name = cs.getString(3);
 
                 DH.insertData(YMD,cost_class_name,edit_re.getText().toString(),account_name,edit_cost_money.getText().toString(),"支出",checkbox_fav.isChecked());
-
+                //Log.e("TAG",cs.getString(4));  帳戶金額
+                float now_money = Float.parseFloat(cs.getString(4)) - Float.parseFloat(edit_cost_money.getText().toString());  //當前帳戶金額剪掉支出金額
+                DH.updateData(Integer.parseInt(cs.getString(0)),cs.getString(3),""+now_money);             //update帳戶資料表
+                
                 Log.e("LOG",""+YMD+cost_class_name+edit_re.getText().toString()+account_name+edit_cost_money.getText().toString()+"支出"+checkbox_fav.isChecked());
                 final Intent gotomain = new Intent(Screen_Check.this,Screen_Main1.class);
                 startActivity(gotomain);
