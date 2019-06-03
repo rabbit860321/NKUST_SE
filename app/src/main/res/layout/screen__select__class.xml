@@ -60,7 +60,7 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/btn_add_a_class2"
+            android:id="@+id/btn_add_a_cost2"
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:layout_gravity="right"

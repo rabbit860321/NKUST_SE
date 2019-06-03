@@ -1,15 +1,22 @@
 package com.nkust_csie.se_project;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,7 +30,9 @@ public class Screen_Select_Class extends AppCompatActivity {
     SQLiteDatabase db;
 
     ListView list_cost_class1,list_cost_class2;
+    Button btn_add_a_cost2;
     Cursor cs;
+    ContentValues cv;
 
     String now_click_left;
     String now_click_right;
@@ -41,6 +50,9 @@ public class Screen_Select_Class extends AppCompatActivity {
 
         list_cost_class1 = (ListView)findViewById(R.id.list_cost_class1);
         list_cost_class2 = (ListView)findViewById(R.id.list_cost_class2);
+        btn_add_a_cost2 = (Button)findViewById(R.id.btn_add_a_cost2);
+
+        cv = new ContentValues();
 
         cs = db.query("tb_cost_class1",null,null,null,null,null,null);
         if(cs.getCount() == 0){     //若cost主類別TB無資料 初始化
@@ -81,7 +93,39 @@ public class Screen_Select_Class extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btn_add_a_cost2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder obj_Dialog = new AlertDialog.Builder(Screen_Select_Class.this);  //彈出對話方塊
+                obj_Dialog.setTitle("新增副類別");
 
+                TableLayout obj_TableLayout = new TableLayout(Screen_Select_Class.this);
+                TableRow obj_TableRow1 = new TableRow(Screen_Select_Class.this);
+
+                final EditText obj_et1 = new EditText(Screen_Select_Class.this);
+                obj_et1.setWidth(600);
+                obj_et1.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                obj_TableRow1.addView(obj_et1);
+
+                obj_TableLayout.addView(obj_TableRow1);
+
+                obj_Dialog.setView(obj_TableLayout);
+
+                obj_Dialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        cv.clear();
+                        cv.put("mainclass",now_click_left);
+                        cv.put("subclass",obj_et1.getText().toString());
+                        db.insert("tb_cost_class2", null, cv);
+
+                        show_costClass2();
+                    }
+                });
+                obj_Dialog.show();
+            }
+        });
     }
 
     private void show_costClass1() {
