@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,8 +35,11 @@ public class Screen_Main1 extends AppCompatActivity
     SQLiteDatabase db;
 
     ListView list_today_cost,list_account;
+    TextView txt_today_cost_total;
     Cursor cs;
     Calendar today;
+
+    float today_cost_total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,9 @@ public class Screen_Main1 extends AppCompatActivity
         today = Calendar.getInstance();
         list_today_cost = (ListView)findViewById(R.id.list_today_cost);
         list_account = (ListView)findViewById(R.id.list_account);
+        txt_today_cost_total = (TextView)findViewById(R.id.txt_today_cost_total);
+
+
 
         int M = today.get(Calendar.MONTH)+1;
         final String YMD = ""+today.get(Calendar.YEAR)+""+M+""+today.get(Calendar.DAY_OF_MONTH);   //今天的年月日
@@ -135,9 +142,11 @@ public class Screen_Main1 extends AppCompatActivity
             item.put("Description",cs.getString(3));
             item.put("Account",cs.getString(4));
             item.put("Money",cs.getString(5));
+            today_cost_total += Float.parseFloat(cs.getString(5));
             items.add(item);
             cs.moveToNext();
         }
+        txt_today_cost_total.setText(""+today_cost_total);
         SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_list_layout,new String[]{"Category","Money","Account","Description"},new int[]{R.id.cl,R.id.co,R.id.ac,R.id.re});
         list_today_cost.setAdapter(SA);
     }
