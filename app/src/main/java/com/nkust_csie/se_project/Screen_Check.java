@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -97,6 +98,7 @@ public class Screen_Check extends AppCompatActivity {
         btn_8.setOnClickListener(listener);
         btn_9.setOnClickListener(listener);
         btn_0.setOnClickListener(listener);
+        btn_dot.setOnClickListener(listener);
 
         btn_del.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,11 +111,21 @@ public class Screen_Check extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String account_name = cs.getString(3);
+                float now_money = 0;
 
-                DH.insertData(YMD,cost_class_name,edit_re.getText().toString(),account_name,edit_cost_money.getText().toString(),"支出",checkbox_fav.isChecked());
                 //Log.e("TAG",cs.getString(4));  帳戶金額
-                float now_money = Float.parseFloat(cs.getString(4)) - Float.parseFloat(edit_cost_money.getText().toString());  //當前帳戶金額剪掉支出金額
-                DH.updateData(Integer.parseInt(cs.getString(0)),cs.getString(3),""+now_money);             //update帳戶資料表
+                if(!edit_cost_money.getText().toString().isEmpty()){  //若輸入金額
+                    now_money = Float.parseFloat(cs.getString(4)) - Float.parseFloat(edit_cost_money.getText().toString());  //當前帳戶金額減掉支出金額
+                }
+
+                if(now_money < 0){
+                    show_toast("你不夠錢啦");
+                }else if(edit_cost_money.getText().toString().isEmpty()){
+                    show_toast("你沒輸入金額啦!");
+                }else{
+                    DH.insertData(YMD,cost_class_name,edit_re.getText().toString(),account_name,edit_cost_money.getText().toString(),"支出",checkbox_fav.isChecked());  //insert支出紀錄
+                    DH.updateData(Integer.parseInt(cs.getString(0)),cs.getString(3),""+now_money);             //update帳戶資料表
+                }
 
                 Log.e("LOG",""+YMD+cost_class_name+edit_re.getText().toString()+account_name+edit_cost_money.getText().toString()+"支出"+checkbox_fav.isChecked());
                 final Intent gotomain = new Intent(Screen_Check.this,Screen_Main1.class);
@@ -171,4 +183,10 @@ public class Screen_Check extends AppCompatActivity {
         edit_cost_money.setText(str + s);
     }
 
+    private void show_toast(String text){
+        Toast toast = Toast.makeText(Screen_Check.this,
+                text, Toast.LENGTH_LONG);
+        //顯示Toast
+        toast.show();
+    }
 }
