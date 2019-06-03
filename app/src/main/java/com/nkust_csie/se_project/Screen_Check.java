@@ -24,7 +24,7 @@ public class Screen_Check extends AppCompatActivity {
     EditText edit_cost_name,edit_cost_money,edit_re;
     Spinner spinner_account;
     Button btn_del;
-    Button btn_1,btn_2,btn_3,btn_4,btn_5,btn_6,btn_7,btn_8,btn_9,btn_0;
+    Button btn_1,btn_2,btn_3,btn_4,btn_5,btn_6,btn_7,btn_8,btn_9,btn_0,btn_dot;
     Button btn_save_cost;
     CheckBox checkbox_fav;
     Calendar today;
@@ -60,6 +60,7 @@ public class Screen_Check extends AppCompatActivity {
         btn_9 = (Button)findViewById(R.id.btn_9);
         btn_0 = (Button)findViewById(R.id.btn_0);
         btn_del = (Button)findViewById(R.id.btn_del);
+        btn_dot = (Button)findViewById(R.id.btn_dot);
 
         int M = today.get(Calendar.MONTH)+1;
         final String YMD = ""+today.get(Calendar.YEAR)+""+M+""+today.get(Calendar.DAY_OF_MONTH);   //今天的年月日
@@ -156,6 +157,9 @@ public class Screen_Check extends AppCompatActivity {
                     break;
                 case R.id.btn_0:
                     display("0");
+                    break;
+                case R.id.btn_dot:
+                    display(".");
                     break;
             }
 

@@ -60,7 +60,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:gravity="right"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:text=""
             android:textColor="@color/colorAccent"
             android:textSize="25dp" />
@@ -297,10 +297,19 @@
                 android:textSize="20dp" />
 
             <Button
-                android:id="@+id/btn_0"
+                android:id="@+id/btn_dot"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@color/paleturquoise"
+                android:text="．"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/btn_0"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/paleturquoise"
                 android:text="0"
