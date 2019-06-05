@@ -116,6 +116,7 @@ public class Screen_Check extends AppCompatActivity {
                 //Log.e("TAG",cs.getString(4));  帳戶金額
                 if(!edit_cost_money.getText().toString().isEmpty()){  //若輸入金額
                     now_money = Float.parseFloat(cs.getString(4)) - Float.parseFloat(edit_cost_money.getText().toString());  //當前帳戶金額減掉支出金額
+                    now_money = (float) (Math.round(now_money*100)/100.0);  //解決精度問題
                 }
 
                 if(now_money < 0){
