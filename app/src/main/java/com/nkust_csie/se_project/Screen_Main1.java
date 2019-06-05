@@ -77,6 +77,7 @@ public class Screen_Main1 extends AppCompatActivity
 
         show_list_today_cost(YMD);  //顯示今日花費
         show_list_account();        //顯示當前帳戶資料
+        show_today_cost(YMD);
 
         findViewById(R.id.btn_menu_setting).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +119,7 @@ public class Screen_Main1 extends AppCompatActivity
 
                         show_list_account();
                         show_list_today_cost(YMD);
+                        show_today_cost(YMD);
                     }
                 });
                 obj_Dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -204,11 +206,9 @@ public class Screen_Main1 extends AppCompatActivity
             item.put("Description",cs.getString(3));
             item.put("Account",cs.getString(4));
             item.put("Money",cs.getString(5));
-            today_cost_total += Float.parseFloat(cs.getString(5));
             items.add(item);
             cs.moveToNext();
         }
-        txt_today_cost_total.setText(""+today_cost_total);
         SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_list_layout,new String[]{"_id","Category","Money","Account","Description"},new int[]{R.id.cid,R.id.cl,R.id.co,R.id.ac,R.id.re});
         list_today_cost.setAdapter(SA);
     }
@@ -227,5 +227,20 @@ public class Screen_Main1 extends AppCompatActivity
         }
         SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.account_list_layout,new String[]{"_id","Account","Money"},new int[]{R.id.account_list_id,R.id.account_list_name,R.id.account_list_money});
         list_account.setAdapter(SA);
+    }
+
+    private void show_today_cost(String YMD){
+        today_cost_total = 0;
+        cs = db.query("tb_cost_history",null,"Date=?",new String[]{YMD},null,null,null);
+        List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
+        cs.moveToFirst();
+        for(int i= 0;i< cs.getCount();i++){
+            Map<String,Object> item = new HashMap<String,Object>();
+            item.put("Money",cs.getString(5));
+            today_cost_total += Float.parseFloat(cs.getString(5));
+            items.add(item);
+            cs.moveToNext();
+        }
+        txt_today_cost_total.setText(""+today_cost_total);
     }
 }
