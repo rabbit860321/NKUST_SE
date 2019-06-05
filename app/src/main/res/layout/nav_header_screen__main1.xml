@@ -6,37 +6,30 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_menu_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:text="1111" />
+        android:text="主畫面" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btn_menu_setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:text="2222" />
+        android:text="設定帳戶" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btn_menu_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:text="3333" />
+        android:text="歷史紀錄" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btn_menu_about"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:text="4444" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:text="5555" />
+        android:text="關於" />
 </LinearLayout>
