@@ -87,6 +87,14 @@ public class Screen_Main1 extends AppCompatActivity
                 finish();
             }
         });
+        findViewById(R.id.btn_menu_history).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent gotohistory = new Intent(Screen_Main1.this,Screen_history.class);
+                startActivity(gotohistory);
+                finish();
+            }
+        });
 
         list_today_cost.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override

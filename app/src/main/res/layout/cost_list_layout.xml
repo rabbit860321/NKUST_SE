@@ -60,5 +60,15 @@
             android:text="帳戶"
             android:textColor="@color/lightpink"
             android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/da"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:text="日期"
+            android:textColor="@color/lightpink"
+            android:visibility="gone"
+            android:textSize="16dp" />
     </LinearLayout>
 </LinearLayout>
