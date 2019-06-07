@@ -19,6 +19,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +95,29 @@ public class Screen_Select_Class extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        list_cost_class2.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final TextView cost_sec = (TextView)view.findViewById(android.R.id.text1);
+                AlertDialog.Builder obj_Dialog = new AlertDialog.Builder(Screen_Select_Class.this);  //彈出對話方塊
+                obj_Dialog.setTitle("確定刪除?");
+                obj_Dialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.delete("tb_cost_class2","subclass"+"='"+cost_sec.getText().toString()+"'",null);
+                        show_costClass2();
+                    }
+                });
+                obj_Dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                obj_Dialog.show();
+                return true;
+            }
+        });
         btn_add_a_cost2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +151,8 @@ public class Screen_Select_Class extends AppCompatActivity {
                 obj_Dialog.show();
             }
         });
+
+
     }
 
     private void show_costClass1() {
