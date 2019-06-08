@@ -23,8 +23,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -169,8 +174,28 @@ public class Screen_Main1 extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.btn_new) {
-            final Intent gotoselclass = new Intent(Screen_Main1.this,Screen_Select_Class.class);
-            startActivity(gotoselclass);
+            AlertDialog.Builder obj_Dialog = new AlertDialog.Builder(Screen_Main1.this);  //彈出對話方塊
+            final ListView obj_lv1 = new ListView(Screen_Main1.this);
+            final ListAdapter adv = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"支出", "收入", "轉帳"});
+            obj_lv1.setAdapter(adv);
+
+            obj_lv1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position){
+                        case 0:  //支出
+                            final Intent gotoselclass = new Intent(Screen_Main1.this,Screen_Select_Class.class);
+                            startActivity(gotoselclass);
+                            break;
+                    }
+                }
+            });
+
+            obj_Dialog.setView(obj_lv1);
+            obj_Dialog.show();
+
+            /*final Intent gotoselclass = new Intent(Screen_Main1.this,Screen_Select_Class.class);
+            startActivity(gotoselclass);*/
             return true;
         }
 
