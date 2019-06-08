@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
@@ -28,9 +29,12 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -187,6 +191,43 @@ public class Screen_Main1 extends AppCompatActivity
                             final Intent gotoselclass = new Intent(Screen_Main1.this,Screen_Select_Class.class);
                             startActivity(gotoselclass);
                             break;
+                        case 1:
+                            LayoutInflater inflater = LayoutInflater.from(Screen_Main1.this);
+                            final View EntryView = inflater.inflate(R.layout.dialog_income,null);
+                            final EditText edit_income_money = EntryView.findViewById(R.id.edit_income_money);
+
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(Screen_Main1.this);
+                            dialog.setView(EntryView);  //dialog設置自定義畫面
+
+
+                            cs = db.query("tb_setting",null,null,null,null,null,null);
+                            final SimpleCursorAdapter adapter = new SimpleCursorAdapter(Screen_Main1.this, android.R.layout.simple_spinner_item ,cs, new String[] { "Account" }, new int[] {android.R.id.text1});
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                            final Spinner sp_income_account = EntryView.findViewById(R.id.sp_income_account);
+                            sp_income_account.setAdapter(adapter);
+
+                            dialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //需先查詢該帳戶目前有多少錢 並加輸入金額加上
+                                    //cs.getString(3) 使用者選擇的帳戶
+                                    //cs.getString(4) 使用者選擇的帳戶的原金額
+                                    float money = Float.parseFloat(cs.getString(4)) + Float.parseFloat(edit_income_money.getText().toString());
+                                    money = (float) (Math.round(money*100)/100.0);  //解決精度問題
+
+                                    if(edit_income_money.getText().toString().isEmpty()){
+                                        show_toast("你沒輸入金額啦!");
+                                    }else{
+                                        ContentValues cv = new ContentValues();
+                                        cv.put("Money",money);
+                                        db.update("tb_setting",cv,"Account"+"='"+cs.getString(3)+"'",null);
+                                        show_list_account();
+                                    }
+                                }
+                            });
+
+                            dialog.show();
                     }
                 }
             });
@@ -275,5 +316,11 @@ public class Screen_Main1 extends AppCompatActivity
             cs.moveToNext();
         }
         txt_today_cost_total.setText(""+today_cost_total);
+    }
+    private void show_toast(String text){
+        Toast toast = Toast.makeText(Screen_Main1.this,
+                text, Toast.LENGTH_LONG);
+        //顯示Toast
+        toast.show();
     }
 }
