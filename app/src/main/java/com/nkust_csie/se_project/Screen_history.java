@@ -1,9 +1,12 @@
 package com.nkust_csie.se_project;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -18,6 +21,7 @@ public class Screen_history extends AppCompatActivity {
     SQLiteDatabase db;
 
     ListView list_history;
+    Button btn_back;
     Cursor cs;
 
     @Override
@@ -31,8 +35,18 @@ public class Screen_history extends AppCompatActivity {
         db = DH.getWritableDatabase();
 
         list_history = (ListView)findViewById(R.id.list_history);
+        btn_back = (Button)findViewById(R.id.btn_back);
 
         show_cost_history();
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent gotomain = new Intent(Screen_history.this,Screen_Main1.class);
+                startActivity(gotomain);
+                finish();
+            }
+        });
     }
 
     private void show_cost_history(){

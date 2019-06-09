@@ -27,7 +27,7 @@ public class Screen_Check extends AppCompatActivity {
     Spinner spinner_account;
     Button btn_del;
     Button btn_1,btn_2,btn_3,btn_4,btn_5,btn_6,btn_7,btn_8,btn_9,btn_0,btn_dot;
-    Button btn_save_cost;
+    Button btn_save_cost,btn_back;
     CheckBox checkbox_fav;
     Calendar today;
 
@@ -63,6 +63,7 @@ public class Screen_Check extends AppCompatActivity {
         btn_0 = (Button)findViewById(R.id.btn_0);
         btn_del = (Button)findViewById(R.id.btn_del);
         btn_dot = (Button)findViewById(R.id.btn_dot);
+        btn_back = (Button)findViewById(R.id.btn_back);
 
         int M = today.get(Calendar.MONTH)+1;
         final String YMD = ""+today.get(Calendar.YEAR)+""+M+""+today.get(Calendar.DAY_OF_MONTH);   //今天的年月日
@@ -143,7 +144,14 @@ public class Screen_Check extends AppCompatActivity {
                 finish();
             }
         });
-
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent gotosel = new Intent(Screen_Check.this,Screen_Select_Class.class);
+                startActivity(gotosel);
+                finish();
+            }
+        });
     }
 
     private Button.OnClickListener listener = new View.OnClickListener() {

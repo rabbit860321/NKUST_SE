@@ -136,12 +136,6 @@ public class Screen_Main1 extends AppCompatActivity
                         final TextView gv_money = (TextView) view.findViewById(R.id.gv_money);
                         final TextView gv_account = (TextView) view.findViewById(R.id.gv_account);
 
-                        ContentValues cv = new ContentValues();
-                        cv.put("Date",YMD);
-                        cv.put("Category",gv_name.getText().toString());
-                        cv.put("Account",gv_account.getText().toString());
-                        cv.put("Money",Float.parseFloat(gv_money.getText().toString()));
-                        db.insert("tb_cost_history",null,cv);
 
                         cs = db.query("tb_setting",null,"Account=?",new String[]{gv_account.getText().toString()},null,null,null);
                         cs.moveToFirst();
@@ -151,6 +145,14 @@ public class Screen_Main1 extends AppCompatActivity
                         if(now_money < 0){
                             show_toast("你錢不夠啦!");
                         }else{
+
+                            ContentValues cv = new ContentValues();
+                            cv.put("Date",YMD);
+                            cv.put("Category",gv_name.getText().toString());
+                            cv.put("Account",gv_account.getText().toString());
+                            cv.put("Money",Float.parseFloat(gv_money.getText().toString()));
+                            db.insert("tb_cost_history",null,cv);
+
                             cv.clear();
                             cv.put("Money",now_money);
 
@@ -269,6 +271,7 @@ public class Screen_Main1 extends AppCompatActivity
 
 
                             cs = db.query("tb_setting",null,null,null,null,null,null);
+                            cs.moveToFirst();
                             final SimpleCursorAdapter adapter = new SimpleCursorAdapter(Screen_Main1.this, android.R.layout.simple_spinner_item ,cs, new String[] { "Account" }, new int[] {android.R.id.text1});
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -280,12 +283,13 @@ public class Screen_Main1 extends AppCompatActivity
                                     //需先查詢該帳戶目前有多少錢 並加輸入金額加上
                                     //cs.getString(3) 使用者選擇的帳戶
                                     //cs.getString(4) 使用者選擇的帳戶的原金額
-                                    float money = Float.parseFloat(cs.getString(4)) + Float.parseFloat(edit_income_money.getText().toString());
-                                    money = (float) (Math.round(money*100)/100.0);  //解決精度問題
+
 
                                     if(edit_income_money.getText().toString().isEmpty()){
                                         show_toast("你沒輸入金額啦!");
                                     }else{
+                                        float money = Float.parseFloat(cs.getString(4)) + Float.parseFloat(edit_income_money.getText().toString());
+                                        money = (float) (Math.round(money*100)/100.0);  //解決精度問題
                                         ContentValues cv = new ContentValues();
                                         cv.put("Money",money);
                                         db.update("tb_setting",cv,"Account"+"='"+cs.getString(3)+"'",null);

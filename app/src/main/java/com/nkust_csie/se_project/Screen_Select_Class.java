@@ -32,7 +32,7 @@ public class Screen_Select_Class extends AppCompatActivity {
     SQLiteDatabase db;
 
     ListView list_cost_class1,list_cost_class2;
-    Button btn_add_a_cost2;
+    Button btn_add_a_cost2,btn_back;
     Cursor cs;
     ContentValues cv;
 
@@ -53,6 +53,7 @@ public class Screen_Select_Class extends AppCompatActivity {
         list_cost_class1 = (ListView)findViewById(R.id.list_cost_class1);
         list_cost_class2 = (ListView)findViewById(R.id.list_cost_class2);
         btn_add_a_cost2 = (Button)findViewById(R.id.btn_add_a_cost2);
+        btn_back = (Button)findViewById(R.id.btn_back);
 
         cv = new ContentValues();
 
@@ -152,6 +153,14 @@ public class Screen_Select_Class extends AppCompatActivity {
             }
         });
 
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent gotomain = new Intent(Screen_Select_Class.this,Screen_Main1.class);
+                startActivity(gotomain);
+                finish();
+            }
+        });
 
     }
 
