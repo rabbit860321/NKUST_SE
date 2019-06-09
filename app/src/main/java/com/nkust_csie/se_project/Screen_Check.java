@@ -1,5 +1,6 @@
 package com.nkust_csie.se_project;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -126,6 +127,14 @@ public class Screen_Check extends AppCompatActivity {
                 }else{
                     DH.insertData(YMD,cost_class_name,edit_re.getText().toString(),account_name,edit_cost_money.getText().toString(),"支出",checkbox_fav.isChecked());  //insert支出紀錄
                     DH.updateData(Integer.parseInt(cs.getString(0)),cs.getString(3),""+now_money);             //update帳戶資料表
+                }
+
+                if(checkbox_fav.isChecked()){
+                    ContentValues cv = new ContentValues();
+                    cv.put("Category",cost_class_name);
+                    cv.put("Account",account_name);
+                    cv.put("Money",Float.parseFloat(edit_cost_money.getText().toString()));
+                    db.insert("tb_cost_fav",null,cv);
                 }
 
                 Log.e("LOG",""+YMD+cost_class_name+edit_re.getText().toString()+account_name+edit_cost_money.getText().toString()+"支出"+checkbox_fav.isChecked());

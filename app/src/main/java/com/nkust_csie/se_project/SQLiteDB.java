@@ -13,6 +13,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private final static String tb_cost_class1 = "tb_cost_class1";
     private final static String tb_cost_class2 = "tb_cost_class2";
     private final static String tb_cost_history = "tb_cost_history";
+    private final static String tb_cost_fav = "tb_cost_fav";
 
 
     public SQLiteDB(Context context) {
@@ -25,6 +26,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
         Create_tb_cost_class1(db);
         Create_tb_cost_class2(db);
         Create_tb_cost_history(db);
+        Create_tb_cost_fav(db);
     }
 
     @Override
@@ -46,6 +48,10 @@ public class SQLiteDB extends SQLiteOpenHelper {
     }
     public void Create_tb_cost_history(SQLiteDatabase db){
         String SQL = "CREATE TABLE IF NOT EXISTS "+tb_cost_history+"(_id INTEGER primary key autoincrement,Date INTEGER,Category TEXT,Description TEXT,Account TEXT,Money FLOAT,PayorEarn TEXT,FavoriteChecked BOOLEAN)";
+        db.execSQL(SQL);
+    }
+    public void Create_tb_cost_fav(SQLiteDatabase db){
+        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_cost_fav+"(_id INTEGER primary key autoincrement,Category TEXT,Account TEXT,Money FLOAT)";
         db.execSQL(SQL);
     }
 
