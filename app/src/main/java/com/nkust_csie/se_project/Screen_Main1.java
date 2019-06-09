@@ -26,6 +26,7 @@ import android.view.Menu;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -106,6 +107,69 @@ public class Screen_Main1 extends AppCompatActivity
                 finish();
             }
         });
+        findViewById(R.id.floatbtn_fav).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder obj_Dialog = new AlertDialog.Builder(Screen_Main1.this);  //彈出對話方塊
+                final GridView gv = new GridView(Screen_Main1.this);
+                gv.setNumColumns(-1);  //auto
+                gv.setHorizontalSpacing(5);
+                gv.setVerticalSpacing(5);
+
+                show_gridview(gv);
+
+                gv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {  //長案刪除
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        final TextView fav_id = (TextView) view.findViewById(R.id.gv_id);
+                        db.delete("tb_cost_fav","_id"+"="+fav_id.getText().toString(),null);
+
+                        show_gridview(gv);
+                        return true;
+                    }
+                });
+
+                gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        final TextView gv_name = (TextView) view.findViewById(R.id.gv_name);
+                        final TextView gv_money = (TextView) view.findViewById(R.id.gv_money);
+                        final TextView gv_account = (TextView) view.findViewById(R.id.gv_account);
+
+                        ContentValues cv = new ContentValues();
+                        cv.put("Date",YMD);
+                        cv.put("Category",gv_name.getText().toString());
+                        cv.put("Account",gv_account.getText().toString());
+                        cv.put("Money",Float.parseFloat(gv_money.getText().toString()));
+                        db.insert("tb_cost_history",null,cv);
+
+                        cs = db.query("tb_setting",null,"Account=?",new String[]{gv_account.getText().toString()},null,null,null);
+                        cs.moveToFirst();
+                        float now_money = Float.parseFloat(cs.getString(4)) - Float.parseFloat(gv_money.getText().toString());  //當前帳戶金額減掉支出金額
+                        now_money = (float) (Math.round(now_money*100)/100.0);
+
+                        if(now_money < 0){
+                            show_toast("你錢不夠啦!");
+                        }else{
+                            cv.clear();
+                            cv.put("Money",now_money);
+
+                            db.update("tb_setting",cv,"Account"+"='"+gv_account.getText().toString()+"'",null);
+                        }
+
+                        show_list_account();
+                        show_list_today_cost(YMD);
+                    }
+                });
+
+
+
+                obj_Dialog.setView(gv);
+                obj_Dialog.show();
+            }
+        });
+
+
 
         list_today_cost.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -401,5 +465,21 @@ public class Screen_Main1 extends AppCompatActivity
                 text, Toast.LENGTH_LONG);
         //顯示Toast
         toast.show();
+    }
+    private void show_gridview(GridView gv){
+        cs = db.query("tb_cost_fav",null,null,null,null,null,null);
+        cs.moveToFirst();
+        List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
+        for(int i= 0;i< cs.getCount();i++){
+            Map<String,Object> item = new HashMap<String,Object>();
+            item.put("_id",cs.getString(0));
+            item.put("Category",cs.getString(1));
+            item.put("Account",cs.getString(2));
+            item.put("Money",cs.getString(3));
+            items.add(item);
+            cs.moveToNext();
+        }
+        SimpleAdapter SA = new SimpleAdapter(Screen_Main1.this, items, R.layout.fav_gridview_layout, new String[]{"_id","Category","Account","Money"}, new int[]{R.id.gv_id, R.id.gv_name,R.id.gv_account,R.id.gv_money});
+        gv.setAdapter(SA);
     }
 }
