@@ -54,6 +54,7 @@ public class Screen_history extends AppCompatActivity {
         btn_sub_month = (Button)findViewById(R.id.btn_sub_month);
 
         show_Year_Month(Y,M);
+        show_cost_history(Y,M);
 
         btn_add_month.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +65,7 @@ public class Screen_history extends AppCompatActivity {
                     M = 1;
                 }
                 show_Year_Month(Y,M);
+                show_cost_history(Y,M);
             }
         });
 
@@ -76,12 +78,11 @@ public class Screen_history extends AppCompatActivity {
                     M = 12;
                 }
                 show_Year_Month(Y,M);
+                show_cost_history(Y,M);
             }
         });
 
 
-
-        show_cost_history();
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,8 +94,9 @@ public class Screen_history extends AppCompatActivity {
         });
     }
 
-    private void show_cost_history(){
-        cs = db.query("tb_cost_history",null,null,null,null,null,null);
+    private void show_cost_history(int Year,int Month){
+        String YM = ""+Year+""+Month;
+        cs = db.query("tb_cost_history",null,"Date LIKE ? ",new String[]{YM+"%"},null,null,null,null);  //模糊查詢
         cs.moveToFirst();
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
         for(int i= 0;i< cs.getCount();i++){
