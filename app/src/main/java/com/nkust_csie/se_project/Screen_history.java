@@ -9,8 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +23,14 @@ public class Screen_history extends AppCompatActivity {
     SQLiteDatabase db;
 
     ListView list_history;
-    Button btn_back;
+    Button btn_back,btn_add_month,btn_sub_month;
+    TextView text_yearandmonth;
     Cursor cs;
+
+    Calendar today;
+
+    int M;
+    int Y;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +42,44 @@ public class Screen_history extends AppCompatActivity {
         DH = new SQLiteDB(this);
         db = DH.getWritableDatabase();
 
+        today = Calendar.getInstance();
+
+        M = today.get(Calendar.MONTH)+1;
+        Y = today.get(Calendar.YEAR);
+
         list_history = (ListView)findViewById(R.id.list_history);
         btn_back = (Button)findViewById(R.id.btn_back);
+        text_yearandmonth = (TextView)findViewById(R.id.text_yearandmonth);
+        btn_add_month = (Button)findViewById(R.id.btn_add_month);
+        btn_sub_month = (Button)findViewById(R.id.btn_sub_month);
+
+        show_Year_Month(Y,M);
+
+        btn_add_month.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                M++;
+                if(M == 13){
+                    Y++;
+                    M = 1;
+                }
+                show_Year_Month(Y,M);
+            }
+        });
+
+        btn_sub_month.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                M--;
+                if(M == 0){
+                    Y--;
+                    M = 12;
+                }
+                show_Year_Month(Y,M);
+            }
+        });
+
+
 
         show_cost_history();
 
@@ -66,5 +110,9 @@ public class Screen_history extends AppCompatActivity {
         }
         SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_list_layout,new String[]{"_id","Date","Category","Money","Account","Description"},new int[]{R.id.cid,R.id.da,R.id.cl,R.id.co,R.id.ac,R.id.re});
         list_history.setAdapter(SA);
+    }
+
+    private void show_Year_Month(int Year,int Month){
+        text_yearandmonth.setText(Year+"年"+Month+"月");
     }
 }
