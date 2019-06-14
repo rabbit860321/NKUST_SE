@@ -453,13 +453,9 @@ public class Screen_Main1 extends AppCompatActivity
     private void show_today_cost(String YMD){
         today_cost_total = 0;
         cs = db.query("tb_cost_history",null,"Date=?",new String[]{YMD},null,null,null);
-        List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
         cs.moveToFirst();
         for(int i= 0;i< cs.getCount();i++){
-            Map<String,Object> item = new HashMap<String,Object>();
-            item.put("Money",cs.getString(5));
             today_cost_total += Float.parseFloat(cs.getString(5));
-            items.add(item);
             cs.moveToNext();
         }
         txt_today_cost_total.setText(""+today_cost_total);

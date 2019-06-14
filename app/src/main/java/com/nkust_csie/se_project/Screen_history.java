@@ -24,7 +24,7 @@ public class Screen_history extends AppCompatActivity {
 
     ListView list_history;
     Button btn_back,btn_add_month,btn_sub_month;
-    TextView text_yearandmonth;
+    TextView text_yearandmonth,txt_total;
     Cursor cs;
 
     Calendar today;
@@ -50,11 +50,13 @@ public class Screen_history extends AppCompatActivity {
         list_history = (ListView)findViewById(R.id.list_history);
         btn_back = (Button)findViewById(R.id.btn_back);
         text_yearandmonth = (TextView)findViewById(R.id.text_yearandmonth);
+        txt_total = (TextView)findViewById(R.id.txt_total);
         btn_add_month = (Button)findViewById(R.id.btn_add_month);
         btn_sub_month = (Button)findViewById(R.id.btn_sub_month);
 
         show_Year_Month(Y,M);
         show_cost_history(Y,M);
+        show_total(Y,M);
 
         btn_add_month.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +68,7 @@ public class Screen_history extends AppCompatActivity {
                 }
                 show_Year_Month(Y,M);
                 show_cost_history(Y,M);
+                show_total(Y,M);
             }
         });
 
@@ -79,6 +82,7 @@ public class Screen_history extends AppCompatActivity {
                 }
                 show_Year_Month(Y,M);
                 show_cost_history(Y,M);
+                show_total(Y,M);
             }
         });
 
@@ -110,11 +114,22 @@ public class Screen_history extends AppCompatActivity {
             items.add(item);
             cs.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_list_layout,new String[]{"_id","Date","Category","Money","Account","Description"},new int[]{R.id.cid,R.id.da,R.id.cl,R.id.co,R.id.ac,R.id.re});
+        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_history_list_layout,new String[]{"_id","Date","Category","Money","Account","Description"},new int[]{R.id.cid,R.id.da,R.id.cl,R.id.co,R.id.ac,R.id.re});
         list_history.setAdapter(SA);
     }
 
     private void show_Year_Month(int Year,int Month){
         text_yearandmonth.setText(Year+"年"+Month+"月");
+    }
+    private void show_total(int Year,int Month){
+        String YM = ""+Year+""+Month;
+        float total = 0;
+        cs = db.query("tb_cost_history",null,"Date LIKE ? ",new String[]{YM+"%"},null,null,null,null);  //模糊查詢
+        cs.moveToFirst();
+        for(int i = 0;i<cs.getCount();i++){
+            total += Float.parseFloat(cs.getString(5));
+            cs.moveToNext();
+        }
+        txt_total.setText(M+"月花了"+total);
     }
 }
