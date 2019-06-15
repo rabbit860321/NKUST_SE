@@ -434,7 +434,7 @@ public class Screen_Main1 extends AppCompatActivity
             item.put("Category",cs.getString(2));
             item.put("Description",cs.getString(3));
             item.put("Account",cs.getString(4));
-            item.put("Money",cs.getString(5)+"元");
+            item.put("Money",cs.getString(5));
             items.add(item);
             cs.moveToNext();
         }
@@ -450,7 +450,7 @@ public class Screen_Main1 extends AppCompatActivity
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",cs.getString(0));
             item.put("Account",cs.getString(3));
-            item.put("Money",cs.getString(4)+"元");
+            item.put("Money",cs.getString(4));
             items.add(item);
             cs.moveToNext();
         }
