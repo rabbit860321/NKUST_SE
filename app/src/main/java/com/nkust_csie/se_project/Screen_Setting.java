@@ -182,7 +182,7 @@ public class Screen_Setting extends AppCompatActivity {
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",settingCursor.getString(0));
             item.put("Account",settingCursor.getString(3));
-            item.put("Money",settingCursor.getString(4));
+            item.put("Money",settingCursor.getString(4)+"元");
             items.add(item);
             settingCursor.moveToNext();
         }

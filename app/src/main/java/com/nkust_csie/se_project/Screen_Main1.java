@@ -107,6 +107,14 @@ public class Screen_Main1 extends AppCompatActivity
                 finish();
             }
         });
+        findViewById(R.id.btn_menu_stat).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent gotostat = new Intent(Screen_Main1.this,Screen_stat.class);
+                startActivity(gotostat);
+                finish();
+            }
+        });
         findViewById(R.id.floatbtn_fav).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -426,7 +434,7 @@ public class Screen_Main1 extends AppCompatActivity
             item.put("Category",cs.getString(2));
             item.put("Description",cs.getString(3));
             item.put("Account",cs.getString(4));
-            item.put("Money",cs.getString(5));
+            item.put("Money",cs.getString(5)+"元");
             items.add(item);
             cs.moveToNext();
         }
@@ -442,7 +450,7 @@ public class Screen_Main1 extends AppCompatActivity
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",cs.getString(0));
             item.put("Account",cs.getString(3));
-            item.put("Money",cs.getString(4));
+            item.put("Money",cs.getString(4)+"元");
             items.add(item);
             cs.moveToNext();
         }
@@ -458,7 +466,7 @@ public class Screen_Main1 extends AppCompatActivity
             today_cost_total += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
-        txt_today_cost_total.setText(""+today_cost_total);
+        txt_today_cost_total.setText(""+today_cost_total+"元");
     }
     private void show_toast(String text){
         Toast toast = Toast.makeText(Screen_Main1.this,
