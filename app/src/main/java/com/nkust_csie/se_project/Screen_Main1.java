@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -175,6 +176,17 @@ public class Screen_Main1 extends AppCompatActivity
 
 
                 obj_Dialog.setView(gv);
+                obj_Dialog.show();
+            }
+        });
+        findViewById(R.id.btn_menu_about).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder obj_Dialog = new AlertDialog.Builder(Screen_Main1.this);  //彈出對話方塊
+                obj_Dialog.setTitle("NKUST");
+                final TextView tv = new TextView(Screen_Main1.this);
+                tv.setText("楊耀仁,高煌勝,蔡信德,賴映全,林子傑");
+                obj_Dialog.setView(tv);
                 obj_Dialog.show();
             }
         });
