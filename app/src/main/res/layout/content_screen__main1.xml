@@ -17,7 +17,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="40dp"
         android:layout_marginLeft="40dp"
-        android:background="@color/white"
+        android:background="@color/honeydew"
         >
 
     </ListView>
@@ -55,7 +55,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
+        android:background="@color/honeydew"
         />
 
     <android.support.design.widget.FloatingActionButton
@@ -66,7 +66,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
-        android:src="@android:drawable/star_big_on"
+        android:src="@drawable/heart"
         app:backgroundTint="@color/white"
         app:elevation="6dp"
         app:pressedTranslationZ="16dp" />

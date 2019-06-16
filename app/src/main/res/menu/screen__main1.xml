@@ -7,6 +7,6 @@
         android:id="@+id/btn_new"
         android:title=""
         app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_input_add"
+        android:icon="@drawable/plus"
         />
 </menu>

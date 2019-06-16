@@ -110,7 +110,7 @@ public class Screen_history extends AppCompatActivity {
             item.put("Category",cs.getString(2));  //類別
             item.put("Description",cs.getString(3));  //備註
             item.put("Account",cs.getString(4));  //帳戶
-            item.put("Money",cs.getString(5)+"元");  //金額
+            item.put("Money","$"+cs.getString(5));  //金額
             items.add(item);
             cs.moveToNext();
         }
@@ -130,6 +130,6 @@ public class Screen_history extends AppCompatActivity {
             total += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
-        txt_total.setText(M+"月花了"+total+"元");
+        txt_total.setText(M+"月花了$"+total);
     }
 }

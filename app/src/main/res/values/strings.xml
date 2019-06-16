@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NKUST_SE</string>
+    <string name="app_name">隨身助手</string>
     <string name="title_activity_screen__main1">Screen_Main1</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

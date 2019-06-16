@@ -72,6 +72,7 @@ public class Screen_Select_Class extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final TextView Classname = (TextView) view.findViewById(android.R.id.text1);
+                btn_add_a_cost2.setVisibility(View.VISIBLE);
                 now_click_left = Classname.getText().toString();      //抓使用者點了哪個主類別
                 show_costClass2();
             }

@@ -147,7 +147,7 @@ public class Screen_Main1 extends AppCompatActivity
 
                         cs = db.query("tb_setting",null,"Account=?",new String[]{gv_account.getText().toString()},null,null,null);
                         cs.moveToFirst();
-                        float now_money = Float.parseFloat(cs.getString(4)) - Float.parseFloat(gv_money.getText().toString());  //當前帳戶金額減掉支出金額
+                        float now_money = Float.parseFloat(cs.getString(4)) - Float.parseFloat(gv_money.getText().toString().substring(1));  //當前帳戶金額減掉支出金額
                         now_money = (float) (Math.round(now_money*100)/100.0);
 
                         if(now_money < 0){
@@ -158,7 +158,7 @@ public class Screen_Main1 extends AppCompatActivity
                             cv.put("Date",YMD);
                             cv.put("Category",gv_name.getText().toString());
                             cv.put("Account",gv_account.getText().toString());
-                            cv.put("Money",Float.parseFloat(gv_money.getText().toString()));
+                            cv.put("Money",Float.parseFloat(gv_money.getText().toString().substring(1)));
                             db.insert("tb_cost_history",null,cv);
 
                             cv.clear();
@@ -203,7 +203,7 @@ public class Screen_Main1 extends AppCompatActivity
                         Log.e("TAG",""+cost_money.getText().toString()); //你點的那筆支出紀錄的金額
 
 
-                        float now_money = Float.parseFloat(cs.getString(4)) + Float.parseFloat(cost_money.getText().toString());  //刪除支出資料 要加回去
+                        float now_money = Float.parseFloat(cs.getString(4)) + Float.parseFloat(cost_money.getText().toString().substring(1));  //刪除支出資料 要加回去
                         now_money = (float) (Math.round(now_money*100)/100.0);  //解決精度問題
                         Log.e("TAG",""+now_money);  //加回去後
                         cv.clear();
@@ -254,7 +254,7 @@ public class Screen_Main1 extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.btn_new) {
-            AlertDialog.Builder obj_Dialog = new AlertDialog.Builder(Screen_Main1.this);  //彈出對話方塊
+            final AlertDialog.Builder obj_Dialog = new AlertDialog.Builder(Screen_Main1.this);  //彈出對話方塊
             final ListView obj_lv1 = new ListView(Screen_Main1.this);
             final ListAdapter adv = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"支出", "收入", "轉帳"});
             obj_lv1.setAdapter(adv);
@@ -302,6 +302,8 @@ public class Screen_Main1 extends AppCompatActivity
                                         cv.put("Money",money);
                                         db.update("tb_setting",cv,"Account"+"='"+cs.getString(3)+"'",null);
                                         show_list_account();
+
+                                        dialog.dismiss();
                                     }
                                 }
                             });
@@ -313,6 +315,7 @@ public class Screen_Main1 extends AppCompatActivity
                             });
 
                             dialog.show();
+
                             break;
                         case 2: //轉帳
                             //須將左邊帳戶原金額扣掉使用者輸入的金額 並把右邊帳戶加上使用者輸入的金額
@@ -434,7 +437,7 @@ public class Screen_Main1 extends AppCompatActivity
             item.put("Category",cs.getString(2));
             item.put("Description",cs.getString(3));
             item.put("Account",cs.getString(4));
-            item.put("Money",cs.getString(5));
+            item.put("Money","$"+cs.getString(5));
             items.add(item);
             cs.moveToNext();
         }
@@ -450,7 +453,7 @@ public class Screen_Main1 extends AppCompatActivity
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",cs.getString(0));
             item.put("Account",cs.getString(3));
-            item.put("Money",cs.getString(4));
+            item.put("Money","$"+cs.getString(4));
             items.add(item);
             cs.moveToNext();
         }
@@ -466,7 +469,7 @@ public class Screen_Main1 extends AppCompatActivity
             today_cost_total += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
-        txt_today_cost_total.setText(""+today_cost_total+"元");
+        txt_today_cost_total.setText("$"+today_cost_total);
     }
     private void show_toast(String text){
         Toast toast = Toast.makeText(Screen_Main1.this,
@@ -483,7 +486,7 @@ public class Screen_Main1 extends AppCompatActivity
             item.put("_id",cs.getString(0));
             item.put("Category",cs.getString(1));
             item.put("Account",cs.getString(2));
-            item.put("Money",cs.getString(3));
+            item.put("Money","$"+cs.getString(3));
             items.add(item);
             cs.moveToNext();
         }

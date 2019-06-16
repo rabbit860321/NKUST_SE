@@ -104,7 +104,7 @@ public class Screen_Setting extends AppCompatActivity {
 
                 account_name.setText(account_list_name.getText().toString());
                 account_name.setFocusable(false);  //將名稱的EditText設為不可編輯
-                account_money.setText(account_list_money.getText().toString());
+                account_money.setText(account_list_money.getText().toString().substring(1));  //去掉$符號
 
                 dialog.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
@@ -182,7 +182,7 @@ public class Screen_Setting extends AppCompatActivity {
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",settingCursor.getString(0));
             item.put("Account",settingCursor.getString(3));
-            item.put("Money",settingCursor.getString(4));
+            item.put("Money","$"+settingCursor.getString(4));
             items.add(item);
             settingCursor.moveToNext();
         }
