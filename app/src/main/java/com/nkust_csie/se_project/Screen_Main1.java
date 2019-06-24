@@ -193,7 +193,7 @@ public class Screen_Main1 extends AppCompatActivity
         findViewById(R.id.btn_menu_main).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
             }
         });
 
