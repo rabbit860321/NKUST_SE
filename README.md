@@ -19,23 +19,35 @@ logo頁面有一個簡單的判斷，如使用者沒輸入過帳戶資料，會�
 
 ## 主畫面
 ![img](https://github.com/rabbit860321/Simple_Accounting_App/blob/master/MAINDEMO.jpg)  
-* 新增一筆支出  
+![img](https://github.com/rabbit860321/Simple_Accounting_App/blob/master/NAVDEMO.jpg)  
+* **新增一筆支出**  
 點選右上角的"+"號，選擇"支出"，會跳轉到選擇支出類別頁面，點選左邊的主類別，再點選右邊的副類別，跳轉到確認頁面  
 輸入金額 選擇帳戶 輸入備註(非必要)，按下"完成"新增支出成功，帳戶金額更新  
 *若無輸入金額 會跳出"請輸入金額!"提示訊息*   
 *若該帳戶餘額不足 會跳出"你不夠錢啦!"提示訊息*  
 ![img](https://github.com/rabbit860321/Simple_Accounting_App/blob/master/COSTDEMO.gif)  
-* 若副類別無適合的 可自行新增
+* **刪除一筆支出**
+長按欲刪除的今日支出即會跳出確認刪除視窗  
+![img](https://github.com/rabbit860321/Simple_Accounting_App/blob/master/DELDEMO.jpg)  
+* **若副類別無適合的 可自行新增**  
 若想刪除 長按該副類別即會跳出確認刪除視窗   
 ![img](https://github.com/rabbit860321/Simple_Accounting_App/blob/master/COST1DEMO.gif)  
-* 常用支出  
+* **常用支出**  
 在支出確認頁面勾選常用支出，點選主畫面右下角愛心圖示即可看見新增的常用支出  
 ![img](https://github.com/rabbit860321/Simple_Accounting_App/blob/master/FAVDEMO.gif)  
-* 收入
+* **收入**  
 點選右上角的"+"號，選擇"收入"  
 選擇帳戶 輸入金額  
 ![img](https://github.com/rabbit860321/Simple_Accounting_App/blob/master/INCOMEDEMO.jpg)  
-* 轉帳
+* **轉帳**  
 點選右上角的"+"號，選擇"轉帳"  
 選擇轉出帳戶 選擇轉入帳戶 輸入金額  
 ![img](https://github.com/rabbit860321/Simple_Accounting_App/blob/master/TRANDEMO.jpg)  
+
+## 歷史紀錄  
+點擊下方箭頭可查看當月的支出紀錄  
+![img](https://github.com/rabbit860321/Simple_Accounting_App/blob/master/HISDEMO.jpg)  
+
+## 統計
+點擊下方箭頭可查看當月的簡易統計  
+![img](https://github.com/rabbit860321/Simple_Accounting_App/blob/master/STATDEMO.jpg)  
