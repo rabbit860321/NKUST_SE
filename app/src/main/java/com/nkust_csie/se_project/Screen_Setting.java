@@ -71,7 +71,7 @@ public class Screen_Setting extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {   //儲存鍵
             @Override
             public void onClick(View v) {
-                settingCursor = db.query("tb_setting",null,null,null,null,null,null);  //查詢tb_setting所有資料
+                settingCursor = db.query("tb_account",null,null,null,null,null,null);  //查詢tb_setting所有資料
 
                 if(settingCursor.getCount() == 0){  //須有一筆帳戶資料以上才能進到主畫面
 
@@ -114,7 +114,11 @@ public class Screen_Setting extends AppCompatActivity {
                         if(account_money.getText().toString().isEmpty()){
                             show_toast("請輸入金額!");
                         }else{
-                            DH.updateData(Integer.parseInt(account_list_id.getText().toString()),account_name.getText().toString(),account_money.getText().toString());
+
+                            ContentValues cv = new ContentValues();
+                            cv.put("帳戶金額",Integer.parseInt(account_money.getText().toString()));
+                            db.update("tb_account",cv,"_id" + "=" + account_list_id.getText().toString(),null);
+
                             show_account_list();
                         }
                     }
@@ -122,7 +126,7 @@ public class Screen_Setting extends AppCompatActivity {
                 dialog.setNegativeButton("刪除", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        db.delete("tb_setting","_id" + "=" + account_list_id.getText().toString(),null);
+                        db.delete("tb_account","_id" + "=" + account_list_id.getText().toString(),null);
                         show_account_list();
                     }
                 });
@@ -148,11 +152,11 @@ public class Screen_Setting extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 //需判斷帳戶名稱是否重複 & 金額是否為空
                 ArrayList<String> ac_name = new ArrayList<String>();
-                settingCursor = db.query("tb_setting",null,null,null,null,null,null);
+                settingCursor = db.query("tb_account",null,null,null,null,null,null);
                 settingCursor.moveToFirst();
 
                 for(int i = 0;i<settingCursor.getCount();i++){              //把所有帳戶名稱存入陣列
-                    ac_name.add(settingCursor.getString(3));
+                    ac_name.add(settingCursor.getString(1));
                     settingCursor.moveToNext();
                 }
 
@@ -161,7 +165,11 @@ public class Screen_Setting extends AppCompatActivity {
                 }else if(account_money.getText().toString().isEmpty()){
                     show_toast("請輸入金額!");
                 }else{
-                    DH.insertData(account_name.getText().toString(),account_money.getText().toString());
+                    ContentValues cv = new ContentValues();
+                    cv.put("帳戶名稱",account_name.getText().toString());
+                    cv.put("帳戶金額",Integer.parseInt(account_money.getText().toString()));
+                    db.insert("tb_account", null, cv);
+
                     show_account_list();
                 }
             }
@@ -175,18 +183,18 @@ public class Screen_Setting extends AppCompatActivity {
         dialog.show();
     }
     private void show_account_list(){
-        settingCursor = db.query("tb_setting",null,null,null,null,null,null);
+        settingCursor = db.query("tb_account",null,null,null,null,null,null);
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
         settingCursor.moveToFirst();
         for(int i= 0;i< settingCursor.getCount();i++){
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",settingCursor.getString(0));
-            item.put("Account",settingCursor.getString(3));
-            item.put("Money","$"+settingCursor.getString(4));
+            item.put("帳戶名稱",settingCursor.getString(1));
+            item.put("帳戶金額","$"+settingCursor.getString(2));
             items.add(item);
             settingCursor.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.account_list_layout,new String[]{"_id","Account","Money"},new int[]{R.id.account_list_id,R.id.account_list_name,R.id.account_list_money});
+        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.account_list_layout,new String[]{"_id","帳戶名稱","帳戶金額"},new int[]{R.id.account_list_id,R.id.account_list_name,R.id.account_list_money});
         itlist_account.setAdapter(SA);
     }
 

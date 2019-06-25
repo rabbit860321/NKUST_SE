@@ -84,9 +84,9 @@ public class Screen_Check extends AppCompatActivity {
             }
         });
 
-        cs = db.query("tb_setting",null,null,null,null,null,null);
+        cs = db.query("tb_account",null,null,null,null,null,null);
 
-        final SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item ,cs, new String[] { "Account" }, new int[] {android.R.id.text1});
+        final SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item ,cs, new String[] { "帳戶名稱" }, new int[] {android.R.id.text1});
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);   //帳戶spinner 載入資料
         spinner_account.setAdapter(adapter);
 
@@ -112,13 +112,12 @@ public class Screen_Check extends AppCompatActivity {
         btn_save_cost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String account_name = cs.getString(3);
-                float now_money = 0;
+                String account_name = cs.getString(1);
+                int now_money = 0;
 
                 //Log.e("TAG",cs.getString(4));  帳戶金額
                 if(!edit_cost_money.getText().toString().isEmpty()){  //若輸入金額
-                    now_money = Float.parseFloat(cs.getString(4)) - Float.parseFloat(edit_cost_money.getText().toString());  //當前帳戶金額減掉支出金額
-                    now_money = (float) (Math.round(now_money*100)/100.0);  //解決精度問題
+                    now_money = Integer.parseInt(cs.getString(2)) - Integer.parseInt(edit_cost_money.getText().toString());  //當前帳戶金額減掉支出金額
                 }
 
                 if(now_money < 0){
@@ -126,15 +125,28 @@ public class Screen_Check extends AppCompatActivity {
                 }else if(edit_cost_money.getText().toString().isEmpty()){
                     show_toast("你沒輸入金額啦!");
                 }else{
-                    DH.insertData(YMD,cost_class_name,edit_re.getText().toString(),account_name,edit_cost_money.getText().toString(),"支出",checkbox_fav.isChecked());  //insert支出紀錄
-                    DH.updateData(Integer.parseInt(cs.getString(0)),cs.getString(3),""+now_money);             //update帳戶資料表
+
+                    ContentValues cv = new ContentValues();
+
+                    cv.put("日期",Integer.parseInt(YMD));
+                    cv.put("支出類別",cost_class_name);
+                    cv.put("備註",edit_re.getText().toString());
+                    cv.put("支出帳戶",account_name);
+                    cv.put("支出金額",Integer.parseInt(edit_cost_money.getText().toString()));
+                    cv.put("常用支出",checkbox_fav.isChecked());
+                    db.insert("tb_cost_history", null, cv);  //insert支出紀錄
+
+                    cv.clear();
+                    cv.put("帳戶名稱",cs.getString(1));
+                    cv.put("帳戶金額",now_money);
+                    db.update("tb_account",cv,"_id" + "=" + cs.getString(0),null);  //update帳戶資料表
                 }
 
                 if(checkbox_fav.isChecked()){
                     ContentValues cv = new ContentValues();
-                    cv.put("Category",cost_class_name);
-                    cv.put("Account",account_name);
-                    cv.put("Money",Float.parseFloat(edit_cost_money.getText().toString()));
+                    cv.put("支出類別",cost_class_name);
+                    cv.put("支出帳戶",account_name);
+                    cv.put("支出金額",Integer.parseInt(edit_cost_money.getText().toString()));
                     db.insert("tb_cost_fav",null,cv);
                 }
 

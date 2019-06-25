@@ -146,26 +146,25 @@ public class Screen_Main1 extends AppCompatActivity
                         final TextView gv_account = (TextView) view.findViewById(R.id.gv_account);
 
 
-                        cs = db.query("tb_setting",null,"Account=?",new String[]{gv_account.getText().toString()},null,null,null);
+                        cs = db.query("tb_account",null,"帳戶名稱=?",new String[]{gv_account.getText().toString()},null,null,null);
                         cs.moveToFirst();
-                        float now_money = Float.parseFloat(cs.getString(4)) - Float.parseFloat(gv_money.getText().toString().substring(1));  //當前帳戶金額減掉支出金額
-                        now_money = (float) (Math.round(now_money*100)/100.0);
+                        int now_money = Integer.parseInt(cs.getString(2)) - Integer.parseInt(gv_money.getText().toString().substring(1));  //當前帳戶金額減掉支出金額
 
                         if(now_money < 0){
                             show_toast("你錢不夠啦!");
                         }else{
 
                             ContentValues cv = new ContentValues();
-                            cv.put("Date",YMD);
-                            cv.put("Category",gv_name.getText().toString());
-                            cv.put("Account",gv_account.getText().toString());
-                            cv.put("Money",Float.parseFloat(gv_money.getText().toString().substring(1)));
+                            cv.put("日期",YMD);
+                            cv.put("支出類別",gv_name.getText().toString());
+                            cv.put("支出帳戶",gv_account.getText().toString());
+                            cv.put("支出金額",Float.parseFloat(gv_money.getText().toString().substring(1)));
                             db.insert("tb_cost_history",null,cv);
 
                             cv.clear();
-                            cv.put("Money",now_money);
+                            cv.put("帳戶金額",now_money);
 
-                            db.update("tb_setting",cv,"Account"+"='"+gv_account.getText().toString()+"'",null);
+                            db.update("tb_account",cv,"帳戶名稱"+"='"+gv_account.getText().toString()+"'",null);
                         }
 
                         show_list_account();
@@ -215,18 +214,17 @@ public class Screen_Main1 extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         db.delete("tb_cost_history","_id"+"="+cost_id.getText().toString(),null);
 
-                        cs = db.query("tb_setting",null,"Account=?",new String[]{cost_account.getText().toString()},null,null,null);
+                        cs = db.query("tb_account",null,"帳戶名稱=?",new String[]{cost_account.getText().toString()},null,null,null);
                         cs.moveToNext();
-                        Log.e("TAG",""+cs.getString(4));  //cs.getString(4)  當前該帳戶金額
+                        Log.e("TAG",""+cs.getString(2));  //cs.getString(4)  當前該帳戶金額
                         Log.e("TAG",""+cost_money.getText().toString()); //你點的那筆支出紀錄的金額
 
 
-                        float now_money = Float.parseFloat(cs.getString(4)) + Float.parseFloat(cost_money.getText().toString().substring(1));  //刪除支出資料 要加回去
-                        now_money = (float) (Math.round(now_money*100)/100.0);  //解決精度問題
+                        int now_money = Integer.parseInt(cs.getString(2)) + Integer.parseInt(cost_money.getText().toString().substring(1));  //刪除支出資料 要加回去
                         Log.e("TAG",""+now_money);  //加回去後
                         cv.clear();
-                        cv.put("Money",now_money);
-                        db.update("tb_setting",cv,"_id"+"="+cs.getString(0),null);
+                        cv.put("帳戶金額",now_money);
+                        db.update("tb_account",cv,"_id"+"="+cs.getString(0),null);
 
                         show_list_account();
                         show_list_today_cost(YMD);
@@ -296,9 +294,9 @@ public class Screen_Main1 extends AppCompatActivity
                             dialog.setView(EntryView);  //dialog設置自定義畫面
 
 
-                            cs = db.query("tb_setting",null,null,null,null,null,null);
+                            cs = db.query("tb_account",null,null,null,null,null,null);
                             cs.moveToFirst();
-                            final SimpleCursorAdapter adapter = new SimpleCursorAdapter(Screen_Main1.this, android.R.layout.simple_spinner_item ,cs, new String[] { "Account" }, new int[] {android.R.id.text1});
+                            final SimpleCursorAdapter adapter = new SimpleCursorAdapter(Screen_Main1.this, android.R.layout.simple_spinner_item ,cs, new String[] { "帳戶名稱" }, new int[] {android.R.id.text1});
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                             sp_income_account.setAdapter(adapter);
@@ -307,18 +305,17 @@ public class Screen_Main1 extends AppCompatActivity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     //需先查詢該帳戶目前有多少錢 並加輸入金額加上
-                                    //cs.getString(3) 使用者選擇的帳戶
-                                    //cs.getString(4) 使用者選擇的帳戶的原金額
+                                    //cs.getString(1) 使用者選擇的帳戶
+                                    //cs.getString(2) 使用者選擇的帳戶的原金額
 
 
                                     if(edit_income_money.getText().toString().isEmpty()){
                                         show_toast("你沒輸入金額啦!");
                                     }else{
-                                        float money = Float.parseFloat(cs.getString(4)) + Float.parseFloat(edit_income_money.getText().toString());
-                                        money = (float) (Math.round(money*100)/100.0);  //解決精度問題
+                                        int money = Integer.parseInt(cs.getString(2)) + Integer.parseInt(edit_income_money.getText().toString());
                                         ContentValues cv = new ContentValues();
-                                        cv.put("Money",money);
-                                        db.update("tb_setting",cv,"Account"+"='"+cs.getString(3)+"'",null);
+                                        cv.put("帳戶金額",money);
+                                        db.update("tb_account",cv,"帳戶名稱"+"='"+cs.getString(1)+"'",null);
                                         show_list_account();
 
                                         dialog.dismiss();
@@ -347,12 +344,12 @@ public class Screen_Main1 extends AppCompatActivity
                             AlertDialog.Builder tr_dialog = new AlertDialog.Builder(Screen_Main1.this);
                             tr_dialog.setView(EV);
 
-                            tr_cs1 = db.query("tb_setting",null,null,null,null,null,null);
-                            tr_cs2 = db.query("tb_setting",null,null,null,null,null,null);
+                            tr_cs1 = db.query("tb_account",null,null,null,null,null,null);
+                            tr_cs2 = db.query("tb_account",null,null,null,null,null,null);
 
-                            final SimpleCursorAdapter ad1 = new SimpleCursorAdapter(Screen_Main1.this, android.R.layout.simple_spinner_item ,tr_cs1, new String[] { "Account" }, new int[] {android.R.id.text1});
+                            final SimpleCursorAdapter ad1 = new SimpleCursorAdapter(Screen_Main1.this, android.R.layout.simple_spinner_item ,tr_cs1, new String[] { "帳戶名稱" }, new int[] {android.R.id.text1});
                             ad1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            final SimpleCursorAdapter ad2 = new SimpleCursorAdapter(Screen_Main1.this, android.R.layout.simple_spinner_item ,tr_cs2, new String[] { "Account" }, new int[] {android.R.id.text1});
+                            final SimpleCursorAdapter ad2 = new SimpleCursorAdapter(Screen_Main1.this, android.R.layout.simple_spinner_item ,tr_cs2, new String[] { "帳戶名稱" }, new int[] {android.R.id.text1});
                             ad2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             sp_tr_1.setAdapter(ad1);
                             sp_tr_2.setAdapter(ad2);
@@ -360,33 +357,31 @@ public class Screen_Main1 extends AppCompatActivity
                             tr_dialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //tr_cs1.getString(3)左邊帳戶名稱
-                                    //tr_cs1.getString(4)左邊帳戶金額
-                                    //tr_cs2.getString(3)右邊帳戶名稱
-                                    //tr_cs2.getString(4)右邊帳戶金額
+                                    //tr_cs1.getString(1)左邊帳戶名稱
+                                    //tr_cs1.getString(2)左邊帳戶金額
+                                    //tr_cs2.getString(1)右邊帳戶名稱
+                                    //tr_cs2.getString(2)右邊帳戶金額
 
-                                    /*Log.e("TAG",tr_cs1.getString(3)+tr_cs2.getString(3));
-                                    Log.e("TAG",tr_cs1.getString(4)+tr_cs2.getString(4));*/
+                                    /*Log.e("TAG",tr_cs1.getString(1)+tr_cs2.getString(1));
+                                    Log.e("TAG",tr_cs1.getString(2)+tr_cs2.getString(2));*/
 
                                     if(edit_tr_money.getText().toString().isEmpty()){
                                         show_toast("你沒輸入金額啦!");
-                                    }else if(tr_cs1.getString(3).equals(tr_cs2.getString(3))){
+                                    }else if(tr_cs1.getString(1).equals(tr_cs2.getString(1))){
                                         show_toast("請選擇兩個不一樣的帳戶");
-                                    }else if(Float.parseFloat(tr_cs1.getString(4)) < Float.parseFloat(edit_tr_money.getText().toString())){
+                                    }else if(Integer.parseInt(tr_cs1.getString(2)) < Integer.parseInt(edit_tr_money.getText().toString())){
                                         show_toast("該帳戶餘額不足");
                                     }else{
-                                        float money = Float.parseFloat(tr_cs1.getString(4)) - Float.parseFloat(edit_tr_money.getText().toString());
-                                        money = (float) (Math.round(money*100)/100.0);  //解決精度問題
+                                        int money = Integer.parseInt(tr_cs1.getString(2)) - Integer.parseInt(edit_tr_money.getText().toString());
                                         ContentValues cv = new ContentValues();
-                                        cv.put("Money",money);
-                                        db.update("tb_setting",cv,"Account"+"='"+tr_cs1.getString(3)+"'",null);
+                                        cv.put("帳戶金額",money);
+                                        db.update("tb_account",cv,"帳戶名稱"+"='"+tr_cs1.getString(1)+"'",null);
 
                                         cv.clear();
 
-                                        money = Float.parseFloat(tr_cs2.getString(4)) + Float.parseFloat(edit_tr_money.getText().toString());
-                                        money = (float) (Math.round(money*100)/100.0);  //解決精度問題
-                                        cv.put("Money",money);
-                                        db.update("tb_setting",cv,"Account"+"='"+tr_cs2.getString(3)+"'",null);
+                                        money = Integer.parseInt(tr_cs2.getString(2)) + Integer.parseInt(edit_tr_money.getText().toString());
+                                        cv.put("帳戶金額",money);
+                                        db.update("tb_account",cv,"帳戶名稱"+"='"+tr_cs2.getString(1)+"'",null);
 
                                         show_list_account();
                                     }
@@ -446,45 +441,45 @@ public class Screen_Main1 extends AppCompatActivity
     }
 
     private void show_list_today_cost(String YMD){
-        cs = db.query("tb_cost_history",null,"Date=?",new String[]{YMD},null,null,null);
+        cs = db.query("tb_cost_history",null,"日期=?",new String[]{YMD},null,null,null);
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
         cs.moveToFirst();
         for(int i= 0;i< cs.getCount();i++){
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",cs.getString(0));
-            item.put("Category",cs.getString(2));
-            item.put("Description",cs.getString(3));
-            item.put("Account",cs.getString(4));
-            item.put("Money","$"+cs.getString(5));
+            item.put("支出類別",cs.getString(2));
+            item.put("備註",cs.getString(3));
+            item.put("支出帳戶",cs.getString(4));
+            item.put("支出金額","$"+cs.getString(5));
             items.add(item);
             cs.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_list_layout,new String[]{"_id","Category","Money","Account","Description"},new int[]{R.id.cid,R.id.cl,R.id.co,R.id.ac,R.id.re});
+        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_list_layout,new String[]{"_id","支出類別","支出金額","支出帳戶","備註"},new int[]{R.id.cid,R.id.cl,R.id.co,R.id.ac,R.id.re});
         list_today_cost.setAdapter(SA);
     }
 
     private void show_list_account(){
-        cs = db.query("tb_setting",null,null,null,null,null,null);
+        cs = db.query("tb_account",null,null,null,null,null,null);
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
         cs.moveToFirst();
         for(int i= 0;i< cs.getCount();i++){
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",cs.getString(0));
-            item.put("Account",cs.getString(3));
-            item.put("Money","$"+cs.getString(4));
+            item.put("帳戶名稱",cs.getString(1));
+            item.put("帳戶金額","$"+cs.getString(2));
             items.add(item);
             cs.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.account_list_layout,new String[]{"_id","Account","Money"},new int[]{R.id.account_list_id,R.id.account_list_name,R.id.account_list_money});
+        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.account_list_layout,new String[]{"_id","帳戶名稱","帳戶金額"},new int[]{R.id.account_list_id,R.id.account_list_name,R.id.account_list_money});
         list_account.setAdapter(SA);
     }
 
     private void show_today_cost(String YMD){
         today_cost_total = 0;
-        cs = db.query("tb_cost_history",null,"Date=?",new String[]{YMD},null,null,null);
+        cs = db.query("tb_cost_history",null,"日期=?",new String[]{YMD},null,null,null);
         cs.moveToFirst();
         for(int i= 0;i< cs.getCount();i++){
-            today_cost_total += Float.parseFloat(cs.getString(5));
+            today_cost_total += Integer.parseInt(cs.getString(5));
             cs.moveToNext();
         }
         txt_today_cost_total.setText("$"+today_cost_total);
@@ -502,13 +497,13 @@ public class Screen_Main1 extends AppCompatActivity
         for(int i= 0;i< cs.getCount();i++){
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",cs.getString(0));
-            item.put("Category",cs.getString(1));
-            item.put("Account",cs.getString(2));
-            item.put("Money","$"+cs.getString(3));
+            item.put("支出類別",cs.getString(1));
+            item.put("支出帳戶",cs.getString(2));
+            item.put("支出金額","$"+cs.getString(3));
             items.add(item);
             cs.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(Screen_Main1.this, items, R.layout.fav_gridview_layout, new String[]{"_id","Category","Account","Money"}, new int[]{R.id.gv_id, R.id.gv_name,R.id.gv_account,R.id.gv_money});
+        SimpleAdapter SA = new SimpleAdapter(Screen_Main1.this, items, R.layout.fav_gridview_layout, new String[]{"_id","支出類別","支出帳戶","支出金額"}, new int[]{R.id.gv_id, R.id.gv_name,R.id.gv_account,R.id.gv_money});
         gv.setAdapter(SA);
     }
 }

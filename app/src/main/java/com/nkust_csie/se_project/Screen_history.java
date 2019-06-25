@@ -100,21 +100,21 @@ public class Screen_history extends AppCompatActivity {
 
     private void show_cost_history(int Year,int Month){
         String YM = ""+Year+""+Month;
-        cs = db.query("tb_cost_history",null,"Date LIKE ? ",new String[]{YM+"%"},null,null,null,null);  //模糊查詢
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? ",new String[]{YM+"%"},null,null,null,null);  //模糊查詢
         cs.moveToFirst();
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
         for(int i= 0;i< cs.getCount();i++){
             Map<String,Object> item = new HashMap<String,Object>();
             item.put("_id",cs.getString(0));  //id
-            item.put("Date",cs.getString(1));  //日期
-            item.put("Category",cs.getString(2));  //類別
-            item.put("Description",cs.getString(3));  //備註
-            item.put("Account",cs.getString(4));  //帳戶
-            item.put("Money","$"+cs.getString(5));  //金額
+            item.put("日期",cs.getString(1));  //日期
+            item.put("支出類別",cs.getString(2));  //類別
+            item.put("備註",cs.getString(3));  //備註
+            item.put("支出帳戶",cs.getString(4));  //帳戶
+            item.put("支出金額","$"+cs.getString(5));  //金額
             items.add(item);
             cs.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_history_list_layout,new String[]{"_id","Date","Category","Money","Account","Description"},new int[]{R.id.cid,R.id.da,R.id.cl,R.id.co,R.id.ac,R.id.re});
+        SimpleAdapter SA = new SimpleAdapter(this,items,R.layout.cost_history_list_layout,new String[]{"_id","日期","支出類別","支出金額","支出帳戶","備註"},new int[]{R.id.cid,R.id.da,R.id.cl,R.id.co,R.id.ac,R.id.re});
         list_history.setAdapter(SA);
     }
 
@@ -124,10 +124,10 @@ public class Screen_history extends AppCompatActivity {
     private void show_total(int Year,int Month){
         String YM = ""+Year+""+Month;
         float total = 0;
-        cs = db.query("tb_cost_history",null,"Date LIKE ? ",new String[]{YM+"%"},null,null,null,null);  //模糊查詢
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? ",new String[]{YM+"%"},null,null,null,null);  //模糊查詢
         cs.moveToFirst();
         for(int i = 0;i<cs.getCount();i++){
-            total += Float.parseFloat(cs.getString(5));
+            total += Integer.parseInt(cs.getString(5));
             cs.moveToNext();
         }
         txt_total.setText(M+"月花了$"+total);

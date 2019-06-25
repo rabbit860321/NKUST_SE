@@ -9,10 +9,11 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
     private final static String DB = "DB2019.db"; //資料庫名稱
     private final static int VS = 2;              //版本
-    private final static String tb_setting = "tb_setting"; //資料表名稱
+
+    private final static String tb_account = "tb_account";
+    private final static String tb_cost_history = "tb_cost_history";
     private final static String tb_cost_class1 = "tb_cost_class1";
     private final static String tb_cost_class2 = "tb_cost_class2";
-    private final static String tb_cost_history = "tb_cost_history";
     private final static String tb_cost_fav = "tb_cost_fav";
 
 
@@ -22,7 +23,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Create_tb_setting(db);
+        Create_tb_account(db);
         Create_tb_cost_class1(db);
         Create_tb_cost_class2(db);
         Create_tb_cost_history(db);
@@ -34,110 +35,51 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
     }
 
-    public void Create_tb_setting(SQLiteDatabase db){
-        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_setting+"(_id INTEGER primary key autoincrement,Category INTEGER,Description TEXT,Account TEXT,Money FLOAT,Frequency TEXT,Date INTEGER,IsFavoriteAccount BOOLEAN)";
-        db.execSQL(SQL);
-    }
-    public void Create_tb_cost_class1(SQLiteDatabase db){
-        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_cost_class1+"(_id INTEGER primary key autoincrement,mainclass TEXT)";  //主分類花費項目資料表
-        db.execSQL(SQL);
-    }
-    public void Create_tb_cost_class2(SQLiteDatabase db){
-        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_cost_class2+"(_id INTEGER primary key autoincrement,mainclass TEXT,subclass TEXT)";  //副分類花費項目資料表
+    public void Create_tb_account(SQLiteDatabase db){
+        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_account+"(_id INTEGER primary key autoincrement,帳戶名稱 TEXT,帳戶金額 INTEGER)";
         db.execSQL(SQL);
     }
     public void Create_tb_cost_history(SQLiteDatabase db){
-        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_cost_history+"(_id INTEGER primary key autoincrement,Date INTEGER,Category TEXT,Description TEXT,Account TEXT,Money FLOAT,PayorEarn TEXT,FavoriteChecked BOOLEAN)";
+        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_cost_history+"(_id INTEGER primary key autoincrement,日期 INTEGER,支出類別 TEXT,備註 TEXT,支出帳戶 TEXT,支出金額 INTEGER,常用支出 BOOLEAN)";
+        db.execSQL(SQL);
+    }
+    public void Create_tb_cost_class1(SQLiteDatabase db){
+        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_cost_class1+"(_id INTEGER primary key autoincrement,支出主分類 TEXT)";  //主分類花費項目資料表
+        db.execSQL(SQL);
+    }
+    public void Create_tb_cost_class2(SQLiteDatabase db){
+        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_cost_class2+"(_id INTEGER primary key autoincrement,支出主分類 TEXT,支出副分類 TEXT)";  //副分類花費項目資料表
         db.execSQL(SQL);
     }
     public void Create_tb_cost_fav(SQLiteDatabase db){
-        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_cost_fav+"(_id INTEGER primary key autoincrement,Category TEXT,Account TEXT,Money FLOAT)";
+        String SQL = "CREATE TABLE IF NOT EXISTS "+tb_cost_fav+"(_id INTEGER primary key autoincrement,支出類別 TEXT,支出帳戶 TEXT,支出金額 INTEGER)";
         db.execSQL(SQL);
     }
 
-
-
-    //Insert data into database; this is for add a new account.
-    public Boolean insertData(String account, String money){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put("Account",account);
-        contentValues.put("Money",Float.parseFloat(money));
-
-        //db.insert(tb_setting, null, contentValues);
-        long result = db.insert(tb_setting, null, contentValues);
-
-        if(result == -1){
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
-
-    public boolean insertData(String date, String category,String description,String account,String money,String payorEarn,Boolean favoriteChecked){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put("Date",Integer.parseInt(date));
-        contentValues.put("Category",category);
-        contentValues.put("Description",description);
-        contentValues.put("Account",account);
-        contentValues.put("Money",Float.parseFloat(money));
-        contentValues.put("PayorEarn",payorEarn);
-        contentValues.put("FavoriteChecked",favoriteChecked);
-
-        long result = db.insert(tb_cost_history, null, contentValues);
-
-        if(result == -1){
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
-
-    public boolean updateData(int id,String account, String money){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put("Account",account);
-        contentValues.put("Money",Float.parseFloat(money));
-
-        long result = db.update("tb_setting",contentValues,"_id" + "=" + id,null);
-
-        if(result == -1){
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
 
     public void cost_class1_init(){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put("mainclass", "餐飲");
+        cv.put("支出主分類", "餐飲");
         db.insert("tb_cost_class1", null, cv);
-        cv.put("mainclass", "服飾美容");
+        cv.put("支出主分類", "服飾美容");
         db.insert("tb_cost_class1", null, cv);
-        cv.put("mainclass", "居家生活");
+        cv.put("支出主分類", "居家生活");
         db.insert("tb_cost_class1", null, cv);
-        cv.put("mainclass", "交通");
+        cv.put("支出主分類", "交通");
         db.insert("tb_cost_class1", null, cv);
-        cv.put("mainclass", "學習");
+        cv.put("支出主分類", "學習");
         db.insert("tb_cost_class1", null, cv);
-        cv.put("mainclass", "休閒");
+        cv.put("支出主分類", "休閒");
         db.insert("tb_cost_class1", null, cv);
-        cv.put("mainclass", "3C");
+        cv.put("支出主分類", "3C");
         db.insert("tb_cost_class1", null, cv);
-        cv.put("mainclass", "汽機車");
+        cv.put("支出主分類", "汽機車");
         db.insert("tb_cost_class1", null, cv);
-        cv.put("mainclass", "醫療");
+        cv.put("支出主分類", "醫療");
         db.insert("tb_cost_class1", null, cv);
-        cv.put("mainclass", "其他");
+        cv.put("支出主分類", "其他");
         db.insert("tb_cost_class1", null, cv);
     }
 
@@ -145,110 +87,110 @@ public class SQLiteDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put("mainclass","餐飲");
-        cv.put("subclass","早餐");
+        cv.put("支出主分類","餐飲");
+        cv.put("支出副分類","早餐");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","餐飲");
-        cv.put("subclass","午餐");
+        cv.put("支出主分類","餐飲");
+        cv.put("支出副分類","午餐");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","餐飲");
-        cv.put("subclass","晚餐");
+        cv.put("支出主分類","餐飲");
+        cv.put("支出副分類","晚餐");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","餐飲");
-        cv.put("subclass","消夜");
+        cv.put("支出主分類","餐飲");
+        cv.put("支出副分類","消夜");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","服飾美容");
-        cv.put("subclass","衣服");
+        cv.put("支出主分類","服飾美容");
+        cv.put("支出副分類","衣服");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","服飾美容");
-        cv.put("subclass","褲子");
+        cv.put("支出主分類","服飾美容");
+        cv.put("支出副分類","褲子");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","服飾美容");
-        cv.put("subclass","鞋子");
+        cv.put("支出主分類","服飾美容");
+        cv.put("支出副分類","鞋子");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","服飾美容");
-        cv.put("subclass","剪髮");
+        cv.put("支出主分類","服飾美容");
+        cv.put("支出副分類","剪髮");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","服飾美容");
-        cv.put("subclass","保養品");
+        cv.put("支出主分類","服飾美容");
+        cv.put("支出副分類","保養品");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","居家生活");
-        cv.put("subclass","家俱");
+        cv.put("支出主分類","居家生活");
+        cv.put("支出副分類","家俱");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","居家生活");
-        cv.put("subclass","房租");
+        cv.put("支出主分類","居家生活");
+        cv.put("支出副分類","房租");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","居家生活");
-        cv.put("subclass","電費");
+        cv.put("支出主分類","居家生活");
+        cv.put("支出副分類","電費");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","交通");
-        cv.put("subclass","公車");
+        cv.put("支出主分類","交通");
+        cv.put("支出副分類","公車");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","交通");
-        cv.put("subclass","捷運");
+        cv.put("支出主分類","交通");
+        cv.put("支出副分類","捷運");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","交通");
-        cv.put("subclass","計程車");
+        cv.put("支出主分類","交通");
+        cv.put("支出副分類","計程車");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","學習");
-        cv.put("subclass","文具");
+        cv.put("支出主分類","學習");
+        cv.put("支出副分類","文具");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","學習");
-        cv.put("subclass","補習");
+        cv.put("支出主分類","學習");
+        cv.put("支出副分類","補習");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","休閒");
-        cv.put("subclass","電影");
+        cv.put("支出主分類","休閒");
+        cv.put("支出副分類","電影");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","休閒");
-        cv.put("subclass","玩具");
+        cv.put("支出主分類","休閒");
+        cv.put("支出副分類","玩具");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","休閒");
-        cv.put("subclass","展覽");
+        cv.put("支出主分類","休閒");
+        cv.put("支出副分類","展覽");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","休閒");
-        cv.put("subclass","運動");
+        cv.put("支出主分類","休閒");
+        cv.put("支出副分類","運動");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","休閒");
-        cv.put("subclass","旅行");
+        cv.put("支出主分類","休閒");
+        cv.put("支出副分類","旅行");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","3C");
-        cv.put("subclass","電話費");
+        cv.put("支出主分類","3C");
+        cv.put("支出副分類","電話費");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","3C");
-        cv.put("subclass","電腦商品");
+        cv.put("支出主分類","3C");
+        cv.put("支出副分類","電腦商品");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","3C");
-        cv.put("subclass","手機配件");
+        cv.put("支出主分類","3C");
+        cv.put("支出副分類","手機配件");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","汽機車");
-        cv.put("subclass","油錢");
+        cv.put("支出主分類","汽機車");
+        cv.put("支出副分類","油錢");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","汽機車");
-        cv.put("subclass","停車費");
+        cv.put("支出主分類","汽機車");
+        cv.put("支出副分類","停車費");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","汽機車");
-        cv.put("subclass","維修保養");
+        cv.put("支出主分類","汽機車");
+        cv.put("支出副分類","維修保養");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","汽機車");
-        cv.put("subclass","罰單");
+        cv.put("支出主分類","汽機車");
+        cv.put("支出副分類","罰單");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","醫療");
-        cv.put("subclass","就醫");
+        cv.put("支出主分類","醫療");
+        cv.put("支出副分類","就醫");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","醫療");
-        cv.put("subclass","藥物");
+        cv.put("支出主分類","醫療");
+        cv.put("支出副分類","藥物");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","醫療");
-        cv.put("subclass","勞健保費");
+        cv.put("支出主分類","醫療");
+        cv.put("支出副分類","勞健保費");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","其他");
-        cv.put("subclass","捐款");
+        cv.put("支出主分類","其他");
+        cv.put("支出副分類","捐款");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","其他");
-        cv.put("subclass","寵物");
+        cv.put("支出主分類","其他");
+        cv.put("支出副分類","寵物");
         db.insert("tb_cost_class2",null,cv);
-        cv.put("mainclass","其他");
-        cv.put("subclass","雜支");
+        cv.put("支出主分類","其他");
+        cv.put("支出副分類","雜支");
         db.insert("tb_cost_class2",null,cv);
     }
 }

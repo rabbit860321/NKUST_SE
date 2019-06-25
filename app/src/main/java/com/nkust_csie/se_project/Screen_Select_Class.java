@@ -106,7 +106,7 @@ public class Screen_Select_Class extends AppCompatActivity {
                 obj_Dialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        db.delete("tb_cost_class2","subclass"+"='"+cost_sec.getText().toString()+"'",null);
+                        db.delete("tb_cost_class2","支出副分類"+"='"+cost_sec.getText().toString()+"'",null);
                         show_costClass2();
                     }
                 });
@@ -143,8 +143,8 @@ public class Screen_Select_Class extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         cv.clear();
-                        cv.put("mainclass",now_click_left);
-                        cv.put("subclass",obj_et1.getText().toString());
+                        cv.put("支出主分類",now_click_left);
+                        cv.put("支出副分類",obj_et1.getText().toString());
                         db.insert("tb_cost_class2", null, cv);
 
                         show_costClass2();
@@ -166,31 +166,31 @@ public class Screen_Select_Class extends AppCompatActivity {
     }
 
     private void show_costClass1() {
-        cs = db.query("tb_cost_class1",new String[]{"mainclass"},null,null,null,null,null);
+        cs = db.query("tb_cost_class1",new String[]{"支出主分類"},null,null,null,null,null);
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
         cs.moveToFirst();
         for(int i= 0;i< cs.getCount();i++){
             Map<String,Object> item = new HashMap<String,Object>();
-            item.put("mainclass",cs.getString(0));
+            item.put("支出主分類",cs.getString(0));
             items.add(item);
             cs.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_list_item_1,new String[]{"mainclass"},new int[]{android.R.id.text1});
+        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_list_item_1,new String[]{"支出主分類"},new int[]{android.R.id.text1});
         list_cost_class1.setAdapter(SA);
     }
 
     private void show_costClass2(){
-        cs = db.query("tb_cost_class2",new String[]{"mainclass","subclass"},"mainclass=?",new String[]{now_click_left},null,null,null);
+        cs = db.query("tb_cost_class2",new String[]{"支出主分類","支出副分類"},"支出主分類=?",new String[]{now_click_left},null,null,null);
         List<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
         cs.moveToFirst();
         for(int j= 0;j< cs.getCount();j++){
             Map<String,Object> item = new HashMap<String,Object>();
-            item.put("mainclass",cs.getString(0));
-            item.put("subclass",cs.getString(1));
+            item.put("支出主分類",cs.getString(0));
+            item.put("支出副分類",cs.getString(1));
             items.add(item);
             cs.moveToNext();
         }
-        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_list_item_1,new String[]{"subclass"},new int[]{android.R.id.text1});
+        SimpleAdapter SA = new SimpleAdapter(this,items,android.R.layout.simple_list_item_1,new String[]{"支出副分類"},new int[]{android.R.id.text1});
         list_cost_class2.setAdapter(SA);
     }
 }

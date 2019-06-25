@@ -116,77 +116,77 @@ public class Screen_stat extends AppCompatActivity {
         float c9 = 0;
         float c10 = 0;
 
-        cs = db.query("tb_cost_history",null,"Date LIKE ? ",new String[]{YM+"%"},null,null,null,null);  //模糊查詢
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? ",new String[]{YM+"%"},null,null,null,null);  //模糊查詢
         cs.moveToFirst();
         for(int i = 0;i<cs.getCount();i++){
             total += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
 
-        cs = db.query("tb_cost_history",null,"Date LIKE ? and Category LIKE ?",new String[]{YM+"%","餐飲-"+"%"},null,null,null,null);
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? and 支出類別 LIKE ?",new String[]{YM+"%","餐飲-"+"%"},null,null,null,null);
         cs.moveToFirst();
         for(int i=0;i<cs.getCount();i++){
             c1 += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
 
-        cs = db.query("tb_cost_history",null,"Date LIKE ? and Category LIKE ?",new String[]{YM+"%","服飾美容-"+"%"},null,null,null,null);
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? and 支出類別 LIKE ?",new String[]{YM+"%","服飾美容-"+"%"},null,null,null,null);
         cs.moveToFirst();
         for(int i=0;i<cs.getCount();i++){
             c2 += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
 
-        cs = db.query("tb_cost_history",null,"Date LIKE ? and Category LIKE ?",new String[]{YM+"%","居家生活-"+"%"},null,null,null,null);
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? and 支出類別 LIKE ?",new String[]{YM+"%","居家生活-"+"%"},null,null,null,null);
         cs.moveToFirst();
         for(int i=0;i<cs.getCount();i++){
             c3 += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
 
-        cs = db.query("tb_cost_history",null,"Date LIKE ? and Category LIKE ?",new String[]{YM+"%","交通-"+"%"},null,null,null,null);
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? and 支出類別 LIKE ?",new String[]{YM+"%","交通-"+"%"},null,null,null,null);
         cs.moveToFirst();
         for(int i=0;i<cs.getCount();i++){
             c4 += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
 
-        cs = db.query("tb_cost_history",null,"Date LIKE ? and Category LIKE ?",new String[]{YM+"%","學習-"+"%"},null,null,null,null);
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? and 支出類別 LIKE ?",new String[]{YM+"%","學習-"+"%"},null,null,null,null);
         cs.moveToFirst();
         for(int i=0;i<cs.getCount();i++){
             c5 += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
 
-        cs = db.query("tb_cost_history",null,"Date LIKE ? and Category LIKE ?",new String[]{YM+"%","休閒-"+"%"},null,null,null,null);
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? and 支出類別 LIKE ?",new String[]{YM+"%","休閒-"+"%"},null,null,null,null);
         cs.moveToFirst();
         for(int i=0;i<cs.getCount();i++){
             c6 += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
 
-        cs = db.query("tb_cost_history",null,"Date LIKE ? and Category LIKE ?",new String[]{YM+"%","3C-"+"%"},null,null,null,null);
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? and 支出類別 LIKE ?",new String[]{YM+"%","3C-"+"%"},null,null,null,null);
         cs.moveToFirst();
         for(int i=0;i<cs.getCount();i++){
             c7 += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
 
-        cs = db.query("tb_cost_history",null,"Date LIKE ? and Category LIKE ?",new String[]{YM+"%","汽機車-"+"%"},null,null,null,null);
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? and 支出類別 LIKE ?",new String[]{YM+"%","汽機車-"+"%"},null,null,null,null);
         cs.moveToFirst();
         for(int i=0;i<cs.getCount();i++){
             c8 += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
 
-        cs = db.query("tb_cost_history",null,"Date LIKE ? and Category LIKE ?",new String[]{YM+"%","醫療-"+"%"},null,null,null,null);
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? and 支出類別 LIKE ?",new String[]{YM+"%","醫療-"+"%"},null,null,null,null);
         cs.moveToFirst();
         for(int i=0;i<cs.getCount();i++){
             c9 += Float.parseFloat(cs.getString(5));
             cs.moveToNext();
         }
 
-        cs = db.query("tb_cost_history",null,"Date LIKE ? and Category LIKE ?",new String[]{YM+"%","其他-"+"%"},null,null,null,null);
+        cs = db.query("tb_cost_history",null,"日期 LIKE ? and 支出類別 LIKE ?",new String[]{YM+"%","其他-"+"%"},null,null,null,null);
         cs.moveToFirst();
         for(int i=0;i<cs.getCount();i++){
             c10 += Float.parseFloat(cs.getString(5));
