@@ -184,6 +184,8 @@ public class Screen_Main1 extends AppCompatActivity
                                 cs.moveToNext();
                             }
                             txt_today_cost_total.setText("$"+today_cost_total);
+
+                            show_list_today_cost(YMD);
                         }
                     }
                 });
