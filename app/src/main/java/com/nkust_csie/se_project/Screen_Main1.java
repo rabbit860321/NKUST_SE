@@ -119,13 +119,17 @@ public class Screen_Main1 extends AppCompatActivity
         findViewById(R.id.floatbtn_fav).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder obj_Dialog = new AlertDialog.Builder(Screen_Main1.this);  //彈出對話方塊
+                final AlertDialog.Builder obj_Dialog = new AlertDialog.Builder(Screen_Main1.this);  //彈出對話方塊
                 final GridView gv = new GridView(Screen_Main1.this);
                 gv.setNumColumns(-1);  //auto
                 gv.setHorizontalSpacing(5);
                 gv.setVerticalSpacing(5);
 
                 show_gridview(gv);
+
+                final AlertDialog fav_Dialog = obj_Dialog.create();
+                fav_Dialog.setView(gv);
+                fav_Dialog.show();
 
                 gv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {  //長案刪除
                     @Override
@@ -165,17 +169,24 @@ public class Screen_Main1 extends AppCompatActivity
                             cv.put("帳戶金額",now_money);
 
                             db.update("tb_account",cv,"帳戶名稱"+"='"+gv_account.getText().toString()+"'",null);
-                        }
+                            cv.clear();
 
-                        show_list_account();
-                        show_list_today_cost(YMD);
+                            fav_Dialog.cancel();
+                            show_list_account();
+
+                            //show_list_today_cost(YMD);
+                            //不知為何上面的method無法運作 QQ
+                            today_cost_total = 0;
+                            cs = db.query("tb_cost_history",null,"日期=?",new String[]{YMD},null,null,null);
+                            cs.moveToFirst();
+                            for(int i= 0;i< cs.getCount();i++){
+                                today_cost_total += Integer.parseInt(cs.getString(5));
+                                cs.moveToNext();
+                            }
+                            txt_today_cost_total.setText("$"+today_cost_total);
+                        }
                     }
                 });
-
-
-
-                obj_Dialog.setView(gv);
-                obj_Dialog.show();
             }
         });
         findViewById(R.id.btn_menu_about).setOnClickListener(new View.OnClickListener() {
